@@ -336,6 +336,7 @@ public class Jboard2 extends JFrame implements ActionListener {
         for (int k = 0; k < allButtons.length; k++) {
             for (int j = 0; j < allButtons[0].length; j++) {
                 allButtons[k][j].setVisible(true);
+                //test
             }
         }
 
