@@ -5,11 +5,14 @@ import javax.swing.border.Border;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.math.*;
 
-public class Jboard2 extends JFrame implements ActionListener {
+public class Jboard2 extends JFrame implements ActionListener, WindowListener, ComponentListener {
     
 //    private int screen_height;
 //    private int screen_width;;
@@ -57,6 +60,8 @@ public class Jboard2 extends JFrame implements ActionListener {
     	makePlayers(playerNames);
     	numCategories = categories.size();
     	numPlayers = players.size();
+    	addWindowListener(this); 
+    	addComponentListener(this);
     	
     }
     
@@ -132,8 +137,8 @@ public class Jboard2 extends JFrame implements ActionListener {
         return screenWidth;
     }
     
-    //addComponentlister(this);
     //below this is the old Jboard class code used for creating the Jboard.
+    
     /**
      * 2d array of all buttons
      */
@@ -159,6 +164,10 @@ public class Jboard2 extends JFrame implements ActionListener {
      */
     private JTextField buttonEdit = new JTextField("");
     /**
+     * JLabel for the game title.
+     */
+    private JLabel title = new JLabel("FFLC 89 2020 Jeopardy");
+    /**
      * reEnable buttons input label
      */
     private JLabel editBtext = new JLabel("Edit Buttons:");
@@ -175,9 +184,17 @@ public class Jboard2 extends JFrame implements ActionListener {
      */
     private boolean isEdit = false;
     /**
+     * ArrayList that holds all the labels of the player names.
+     */
+    private ArrayList<JLabel> allNames = new ArrayList<JLabel>();
+    /**
      * Arraylist that holds all the labels of the scores.
      */
     private ArrayList<JLabel> allScores = new ArrayList<JLabel>();
+    /**
+     * Arraylist that holds all the labels of the scores.
+     */
+    private ArrayList<JLabel> allCategories = new ArrayList<JLabel>();
     /**
      * double jeoprady button
      */
@@ -219,7 +236,7 @@ public class Jboard2 extends JFrame implements ActionListener {
      */
     public void createboard() {
         //title
-        JLabel title = new JLabel("FFLC 89 2019 Jeopardy");
+        //JLabel title = new JLabel("FFLC 89 2019 Jeopardy");
         title.setForeground(Color.BLACK);
         title.setFont(new Font("TimesRoman", 1, screenHeight / 25));
         title.setBounds(screenWidth / 2 - ((int) (screenWidth / 3.6)) / 2, screenHeight / 15,
@@ -300,6 +317,7 @@ public class Jboard2 extends JFrame implements ActionListener {
             		screenHeight / heightDivider);
             subject.setBorder(border);
             add(subject);
+            allCategories.add(subject);
             w += widthIncrementor;
         }
         
@@ -353,14 +371,66 @@ public class Jboard2 extends JFrame implements ActionListener {
             x2 += labelwIncrementor;
             //x += (int) (screenWidth / 11.5);
             allScores.add(scores);
+            allNames.add(pname);
             add(pname);
-            
             add(scores);
         }
-        
-        
     }
-
+    
+    /**
+     * resizeBoard: Function that resizes the board if the size of the window changes.
+     * This gets called if the height or width changes by 10% or more.
+     * This is very similar to the create board method.
+     */
+    public void resizeBoard() {
+    	//changing button bounds
+    	title.setBounds(screenWidth / 2 - ((int) (screenWidth / 3.6)) / 2, screenHeight / 15,
+                (int) (screenWidth / 3.6), screenHeight / 18);
+    	edit.setBounds(screenWidth * 5 / 6, screenHeight / 10, (int) (screenWidth / 28.8), screenHeight / 30);
+    	done.setBounds(screenWidth * 5 / 6 + (int) (screenWidth / 19.2 * 1.3), screenHeight / 10,
+                (int) (screenWidth / 19.2), screenHeight / 30);
+    	buttonEdit.setBounds(screenWidth / 30, screenHeight / 4, (int) (screenWidth / 14.4), screenHeight / 30);
+    	editBtext.setBounds(screenWidth / 30, screenHeight / 4 - screenHeight / 30 * 3 / 2,
+    	        (int) (screenWidth / 14.4), screenHeight / 30);
+    	submit1.setBounds(screenWidth / 30, screenHeight / 4 + screenHeight / 30 * 3 / 2,
+    	        (int) (screenWidth / 14.4), screenHeight / 30);
+    	changeScores.setBounds(screenWidth / 30, screenHeight / 2, (int) (screenWidth / 14.4), screenHeight / 30);
+    	changeScoresText.setBounds(screenWidth / 30, screenHeight / 2 - screenHeight / 30 * 3 / 2,
+    	        (int) (screenWidth / 14.4), screenHeight / 30);
+    	submit2.setBounds(screenWidth / 30, screenHeight / 2 + screenHeight / 30 * 3 / 2,
+    	        (int) (screenWidth / 14.4), screenHeight / 30);
+    	doubleJ.setBounds((int) (screenWidth / 7.2), screenHeight / 15, (int) (screenWidth / 9.6), screenHeight / 18);
+    	
+    	//changing player name and score bounds
+    	int x = screenWidth / 8;
+    	int labelwIncrementor = (int) ((8./9.) * screenWidth - x) / numPlayers;
+        int labelwDivider = screenWidth / labelwIncrementor;
+    	for (int k = 0; k < allScores.size(); k++) {
+    		allScores.get(k).setBounds(x, screenHeight * 3 / 4, (int) (screenWidth / labelwDivider), screenHeight / 18);
+    		allNames.get(k).setBounds(x, screenHeight * 3 / 4 + (int) (screenHeight / 18 * 1.3),
+                    (int) (screenWidth / labelwDivider), screenHeight / 18);
+    		x += labelwIncrementor;
+    	}
+    	
+    	//changing button and category label bounds
+    	x = screenWidth / 8;
+        int y = screenHeight / 4;
+    	int widthIncrementor = (int) ((8./9.) * screenWidth - x) / numCategories;
+        int widthDivider = (int) screenWidth / widthIncrementor;
+        int heightIncrementor = (int) ((2./3.) * screenHeight - y) / 5;
+        int heightDivider = (int) screenHeight / heightIncrementor;
+        
+        for (int k = 0; k < allButtons.length; k++) {
+        	allCategories.get(k).setBounds(x, screenHeight / 6, (int) (screenWidth / widthDivider), 
+            		screenHeight / heightDivider);
+        	for (int j = 0; j < allButtons[0].length; j++) {
+        		allButtons[k][j].setBounds(x, y, (int) (screenWidth / widthDivider), screenHeight / heightDivider);
+        		y += heightIncrementor;
+        	}
+        	y = screenHeight / 4;
+        	x += widthIncrementor;
+        }
+    }
   
 
     /**
@@ -369,7 +439,7 @@ public class Jboard2 extends JFrame implements ActionListener {
     public void enable_all_buttons() {
         for (int k = 0; k < allButtons.length; k++) {
             for (int j = 0; j < allButtons[0].length; j++) {
-                allButtons[k][j].setVisible(true);
+            	allButtons[k][j].setVisible(true);
             }
         }
 
@@ -583,7 +653,6 @@ public class Jboard2 extends JFrame implements ActionListener {
             showAns.setVisible(false);
             ans.setVisible(true);
             for (int k = 0; k < allQButtons.length; k++) {
-            	//not set yet or null pointer error here
                 allQButtons[k].setVisible(true);
             }
         }
@@ -631,48 +700,102 @@ public class Jboard2 extends JFrame implements ActionListener {
         }
     }
     
+    ///////////////////////////////********** Window and Compenent Events ****************\\\\\\\\\\\\\\\\\\\\\\\
     
-    /**
-     * This method creates all the Score Buttons
-     * Should be Void?
-     * Should be in create board?
-     * @return a 2d array of all the score buttons
-     */
-//    public JButton[][] createbuttons() {
-//        JButton[][] buttons = new JButton[numCategories][5];
-//        int x = screenWidth / 8;
-//        int y = screenHeight / 4; //screenHeight / 6 + screenHeight / 12;
-//        Integer val = 100;
-//        String value = val.toString();
-//        int widthIncrementor = (int) ((8./9.) * screenWidth - x) / numCategories;
-//        int widthDivider = (int) screenWidth / widthIncrementor;
-//        int heightIncrementor = (int) ((2./3.) * screenHeight - y) / buttons[0].length;
-//        int heightDivider = (int) screenHeight / heightIncrementor;
-//        
-//
-//        //making all buttons and assigning values
-//        for (int k = 0; k < buttons.length; k++) {
-//            for (int j = 0; j < buttons[0].length; j++) {
-//                buttons[k][j] = new JButton();
-//                buttons[k][j].setText(value);
-//                buttons[k][j].setEnabled(true);
-//                buttons[k][j].addActionListener(this);
-//                //buttons[k][j].setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-//                //buttons[k][j].setBounds(x, y, (int) (screenWidth / 14.4), screenHeight / 12);
-//                buttons[k][j].setBounds(x, y, (int) (screenWidth / widthDivider), screenHeight / heightDivider);
-//                add(buttons[k][j]);
-//                val += 100;
-//                value = val.toString();
-//                y += heightIncrementor;
-//            }
-//            x += widthIncrementor;
-//            val = 100;
-//            value = val.toString();
-//            y = screenHeight / 4;
-//        }
-//        allButtons = buttons;
-//        return buttons;
-//    }
-    
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+	
+	/**
+	 * method to kill program when window is closed.
+	 */
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		System.exit(0);
+	}
 
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void windowStateChanged(WindowEvent e) {
+		
+	}
+	
+	/////////////////////////****** Compenent Listner *******////////////////////////////
+	
+	/**
+	 * Compenent Resized: Overiding compenent risized method. Checks to see if Window is size has changed by more than 10%.
+	 * If the window size has changed by more than 10% then it changes screenWidth and Height and resizes the board.
+	 */
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		//System.out.println("dflasdlkjdf");
+		//System.out.println(getAlignmentX());
+		//System.out.println(getBounds());
+		double nwidth = getBounds().width;
+		double nheight = getBounds().height;
+		if (percentDiffrence(screenWidth, nwidth) > .1 || percentDiffrence(screenHeight, nheight) > .1) {
+			screenWidth = (int) nwidth;
+			screenHeight = (int) nheight;
+			//run resize board
+			resizeBoard();
+			//System.out.println("faldfw");
+		}
+	}
+	
+	/**
+	 * Helper function to caculate the percent diffrence between two numbers.
+	 * @param one First value.
+	 * @param two Second value.
+	 * @return Double of the percent diffrence between the two numbers. Value is in form 55% not .55.
+	 */
+	public double percentDiffrence(double one, double two) {
+		return ( Math.abs(one - two) / ((one + two) / 2.) ) * 100.;
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+    
 }

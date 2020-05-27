@@ -2,6 +2,10 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.Button;
 import javax.swing.JPanel;
+import java.time.*;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class main {
     public static void main(String[] args) {
@@ -43,6 +47,20 @@ public class main {
         j2.setVisible(true);
         System.out.println(j2.getScreenWidth());
         System.out.println(j2.getScreenHeight());
+        
+//        long startTime = System.currentTimeMillis();
+//        long elapsedTime = 0;
+//        
+//        for (int k = 0; k < 15; k++) {
+//        	 while (elapsedTime < 2000) {
+//                 //perform db poll/check
+//                 elapsedTime = (new Date()).getTime() - startTime;
+//             }
+//        	 elapsedTime = 0;
+//        	 startTime = new Date().getTime();
+//        	 System.out.println(j2.getScreenWidth() + " , " + j2.getScreenHeight());
+//        }
+//        System.out.println("dfadfsdf");
         
         /*DoubleJboard d = new DoubleJboard(j.allPlayers);
         d.getContentPane().setBackground(Color.WHITE);
