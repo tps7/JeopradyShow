@@ -1,8 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.Border;
-
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -12,16 +10,26 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.math.*;
 
-public class Jboard2 extends JFrame implements ActionListener, WindowListener, ComponentListener {
-    
-//    private int screen_height;
-//    private int screen_width;;
-//    private int num_players;
-//    private Player[] players;
-//    private Question question;
-//    private int qnum;
-//    private int[] points;
-    
+/**
+ * A class that makes the Jeoprady board.
+ * The class is an extension of a JFrame. 
+ * It implements action, window, and compenent listners.
+ * 
+ * TODO most of these are not need for function but are extra things to do if time.
+ * Make Qboard so it dynamically resizes.
+ * Make Qboard appear on same screen as JBoard.
+ * Allign player name and points with right and left end of button columns.
+ * Adjust Font sizes so it changes more dynamically so you can always read font.
+ * Accomadate a diffrent number of questions per category.
+ * Accomadate diffrent point values per category.
+ * Include Daily Doubles. Weigh probablility towards begining.
+ * 
+ * @author timothysullivan
+ *
+ */
+public class Jboard2 extends JFrame implements ActionListener, WindowListener, ComponentListener {  
+	//Private Varibles
+	//Genral varibles
     /**
      * Screen Width
      */
@@ -41,103 +49,17 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      */
     private ArrayList<Player> players = new ArrayList<Player>();
     
+    /**
+     * An interger storing the number of categories.
+     */
     private int numCategories;
     
+    /**
+     * An integer storing the number of players.
+     */
     private int numPlayers;
     
-    /**
-     * empty constructor
-     */
-    Jboard2() {}
-    
-    /**
-     * This is the Jboard constructor used to construct the jeoprady board without given player points
-     * @param categories_names An array of strings. The strings are the names of the categories.
-     * @param playerNames The names of the players.
-     */
-    Jboard2(String[] categories_names,String[] playerNames) {
-    	setcategories(categories_names);
-    	makePlayers(playerNames);
-    	numCategories = categories.size();
-    	numPlayers = players.size();
-    	addWindowListener(this); 
-    	addComponentListener(this);
-    	
-    }
-    
-    /**
-     * This is the Jboard constructor used to construct the jeoprady board.
-     * @param categories_names An array of strings. The strings are the names of the categories.
-     * @param playerPoints The starting points of the players. If this is empty there are zero.
-     * @param playerNames The names of the players.
-     */
-    Jboard2(String[] categories_names, int[] playerPoints, String[] playerNames) {
-    	setcategories(categories_names);
-    	makePlayers(playerPoints, playerNames);
-    	
-    }
-    
-    
-    /**
-     * Helper function that sets the categories
-     * @param cnames list of names of the categories
-     */
-    public void setcategories(String[] cnames) {
-    	for (int k = 0; k < cnames.length; k++) {
-    		category c = new category(cnames[k]);
-    		categories.add(c);
-    	}
-    	return;
-    }
-    
-    /**
-     * Helper function that creates the players.
-     * @param pnames Names of the players.
-     */
-    public void makePlayers(String[] pnames) {
-    	for (int k = 0; k < pnames.length; k++) {
-    		Player p = new Player(pnames[k]);
-    		players.add(p);
-    	}
-    	return;
-    }
-    
-    /**
-     * Helper function that creates the players.
-     * @param points Starting points of the players.
-     * @param pnames Names of the players.
-     */
-    public void makePlayers(int[] points, String[] pnames) {
-    	if (points.length != pnames.length) {
-    		makePlayers(pnames);
-    		return;
-    	}
-    	for (int k = 0; k < pnames.length; k++) {
-    		Player p = new Player(pnames[k], points[k]);
-    		players.add(p);
-    	}
-    	return;
-    }
-    
-    /**
-     * Gets Screen height
-     *
-     * @return Screen height
-     */
-    public int getScreenHeight() {
-        return screenHeight;
-    }
-
-    /**
-     * gets screen width
-     *
-     * @return screen width
-     */
-    public int getScreenWidth() {
-        return screenWidth;
-    }
-    
-    //below this is the old Jboard class code used for creating the Jboard.
+    //varibles for things on Jboard Like buttons and labels
     
     /**
      * 2d array of all buttons
@@ -222,29 +144,173 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * the answer to the question
      */
     private JLabel ans = new JLabel("", SwingConstants.CENTER);
-
-    //can make these nonprivate when everything is in create board
-//    private int widthIncrementor = (int) ((8./9.) * screenWidth - (screenWidth / 8.)) 
-//    		/ numCategories;
-//    private int widthDivider = (int) screenWidth / widthIncrementor;
-//    private int heightIncrementor = (int) ((2./3.) * screenHeight - screenHeight / 4.) 
-//    		/ 5;
-//    private int heightDivider = (int) screenHeight / heightIncrementor;
+    
+    //End varible declaration begin code
+    
     
     /**
-     * This methods creates the title and the labels for all the categories and any other miscilanous things on the board
+     * empty constructor
+     */
+    Jboard2() {}
+    
+    /**
+     * This is the Jboard constructor used to construct the jeoprady board without given player points
+     * @param categories_names An array of strings. The strings are the names of the categories.
+     * @param playerNames The names of the players.
+     */
+    Jboard2(String[] categories_names,String[] playerNames) {
+    	setcategories(categories_names);
+    	makePlayers(playerNames);
+    	numCategories = categories.size();
+    	numPlayers = players.size();
+    	addWindowListener(this); 
+    	addComponentListener(this);
+    }
+    
+    
+    /**
+     * setcategories: Helper function that sets the name of the categories and 
+     * adds the categories to the categories arraylist.
+     * @param cnames list of names of the categories
+     */
+    public void setcategories(String[] cnames) {
+    	for (int k = 0; k < cnames.length; k++) {
+    		category c = new category(cnames[k]);
+    		categories.add(c);
+    	}
+    	return;
+    }
+    
+    /**
+     * makePlayers: Helper function that creates the players and adds them to a player arraylist.
+     * @param pnames Names of the players.
+     */
+    public void makePlayers(String[] pnames) {
+    	for (int k = 0; k < pnames.length; k++) {
+    		Player p = new Player(pnames[k]);
+    		players.add(p);
+    	}
+    	return;
+    }
+    
+    /**
+     * Gets Screen height
+     *
+     * @return Screen height
+     */
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    /**
+     * Gets screen width
+     *
+     * @return screen width
+     */
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+    
+    /**
+     * enable_all_buttons: A single method that enables all buttons.
+     * This method is only called if when inputing buttons you input all.
+     */
+    public void enable_all_buttons() {
+        for (int k = 0; k < allButtons.length; k++) {
+            for (int j = 0; j < allButtons[0].length; j++) {
+            	allButtons[k][j].setVisible(true);
+            }
+        }
+
+    }
+
+    /**
+     * getButtonVal: Gets int value of a button if the button has a numerical value
+     *
+     * @param b A button that has a numerical value. This is one of the buttons below the cateogries.
+     * @return value of button or zero if button has no value.
+     */
+    public int getButtonVal(JButton b) {
+        String s = b.getText();
+        int val = 0;
+        try {
+            val = Integer.parseInt(s);
+        } catch (Exception e) {
+            return 0;
+        }
+        return val;
+    }
+
+    /**
+     * reEnable_Buttons: reEnables individual buttons based on user input
+     * This method relies on text input from a text field.
+     * Uses a x and y cordnate system for buttons with (0, 0) being the top left game button.
+     * The bottom left game button has cordinates of (l, w) where l is the number of categories - 1 and
+     * w is the number of questions per category - 1.
+     * 
+     */
+    public void reEnable_Buttons() {
+        int x = 0;
+        int y = 0;
+        String input = buttonEdit.getText();
+
+        //if input is all reEnables all disabled buttons
+        if (input.equals("all")) {
+            this.enable_all_buttons();
+        }
+
+        String[] vals = input.split(" ");
+        boolean inputs = false;
+        //System.out.println(vals);
+        try {
+            x = Integer.parseInt(vals[0]);
+            y = Integer.parseInt(vals[1]);
+            inputs = true;
+        } catch (Exception e) {
+            System.out.println("bad inputs");
+            return;
+        }
+
+        if (x < allButtons.length && y < allButtons[0].length) {
+            allButtons[x][y].setVisible(true);
+        }
+
+    }
+
+    /**
+     * changeScore: Changes the players score.
+     * This function is called when the submit button for editing scores is pressed.
+     */
+    public void changeScore() {
+        String input = changeScores.getText();
+        String[] vals = input.split(" ");
+        int score = 0;
+        int index = 0;
+        try {
+            index = Integer.parseInt(vals[0]);
+            score = Integer.parseInt(vals[1]);
+        } catch (Exception e) {
+            System.out.println("bad inputs");
+            return;
+        }
+        if (index < players.size()) {
+            players.get(index).setScore(score);
+            allScores.get(index).setText(Integer.toString(players.get(index).getScore()));
+        }
+    }
+    
+    /**
+     * CreateBoard: This methods creates the title and the labels 
+     * for all the categories and any other miscilanous things on the board.
+     * It also places all of these things on the board in the correct location realative to screen size.
      */
     public void createboard() {
         //title
-        //JLabel title = new JLabel("FFLC 89 2019 Jeopardy");
         title.setForeground(Color.BLACK);
         title.setFont(new Font("TimesRoman", 1, screenHeight / 25));
         title.setBounds(screenWidth / 2 - ((int) (screenWidth / 3.6)) / 2, screenHeight / 15,
                 (int) (screenWidth / 3.6), screenHeight / 18);
         add(title);
-        float x = getAlignmentX();
-        float y = getAlignmentY();
-        System.out.println(x + " , " + y);
 
         //editbutton
         Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
@@ -301,8 +367,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         doubleJ.addActionListener(this);
         add(doubleJ);
         
-        x = screenWidth / 8;
-        y = screenHeight / 4;
+        //varibles needed for below
+        int x = screenWidth / 8;
+        int y = screenHeight / 4;
         int widthIncrementor = (int) ((8./9.) * screenWidth - x) / numCategories;
         int widthDivider = (int) screenWidth / widthIncrementor;
         int heightIncrementor = (int) ((2./3.) * screenHeight - y) / 5;
@@ -321,8 +388,8 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             w += widthIncrementor;
         }
         
-        int x2 = screenWidth / 8;
-        int y2 = screenHeight / 4;
+        x = screenWidth / 8;
+        y = screenHeight / 4;
         
         //create buttons
         JButton[][] buttons = new JButton[numCategories][5];
@@ -337,23 +404,23 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                 buttons[k][j].addActionListener(this);
                 //buttons[k][j].setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
                 //buttons[k][j].setBounds(x, y, (int) (screenWidth / 14.4), screenHeight / 12);
-                buttons[k][j].setBounds(x2, y2, (int) (screenWidth / widthDivider), screenHeight / heightDivider);
+                buttons[k][j].setBounds(x, y, (int) (screenWidth / widthDivider), screenHeight / heightDivider);
                 add(buttons[k][j]);
                 val += 100;
                 value = val.toString();
-                y2 += heightIncrementor;
+                y += heightIncrementor;
             }
-            x2 += widthIncrementor;
+            x += widthIncrementor;
             val = 100;
             value = val.toString();
-            y2 = screenHeight / 4;
+            y = screenHeight / 4;
         }
         allButtons = buttons;
         
-        x2 = screenWidth / 8;
+        x = screenWidth / 8;
         
         //make scoreboard
-        int labelwIncrementor = (int) ((8./9.) * screenWidth - x2) / numPlayers;
+        int labelwIncrementor = (int) ((8./9.) * screenWidth - x) / numPlayers;
         int labelwDivider = screenWidth / labelwIncrementor;
         Font f = new Font("TimesRoman", 0, screenHeight / 28);
         //Border border2 = BorderFactory.createLineBorder(Color.BLACK, 1);
@@ -364,11 +431,11 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             scores.setFont(f);
             //height is good here. placment at 3/4 of height with length of height/18.
             //Maybe go back and make width so it lines up with first and last column of buttons? 
-            scores.setBounds(x2, screenHeight * 3 / 4, (int) (screenWidth / labelwDivider), screenHeight / 18);
+            scores.setBounds(x, screenHeight * 3 / 4, (int) (screenWidth / labelwDivider), screenHeight / 18);
             //height here same as above but position is below (this is why the h/18 * 1.3 is below)
-            pname.setBounds(x2, screenHeight * 3 / 4 + (int) (screenHeight / 18 * 1.3),
+            pname.setBounds(x, screenHeight * 3 / 4 + (int) (screenHeight / 18 * 1.3),
                     (int) (screenWidth / labelwDivider), screenHeight / 18);
-            x2 += labelwIncrementor;
+            x += labelwIncrementor;
             //x += (int) (screenWidth / 11.5);
             allScores.add(scores);
             allNames.add(pname);
@@ -379,7 +446,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     
     /**
      * resizeBoard: Function that resizes the board if the size of the window changes.
-     * This gets called if the height or width changes by 10% or more.
+     * This gets called if the height or width changes by .1% or more.
      * This is very similar to the create board method.
      */
     public void resizeBoard() {
@@ -432,94 +499,11 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         }
     }
   
-
     /**
-     * method that enables all buttons
-     */
-    public void enable_all_buttons() {
-        for (int k = 0; k < allButtons.length; k++) {
-            for (int j = 0; j < allButtons[0].length; j++) {
-            	allButtons[k][j].setVisible(true);
-            }
-        }
-
-    }
-
-    /**
-     * Method that gets value of a button if the button has a numerical value
+     * createQBoard: This method creates and places all the parts of the question board (Qboard).
+     * This board appears when you click a point button on the Jboard
      *
-     * @param b a button that has a numerical value
-     * @return value of button
-     */
-    public int getButtonVal(JButton b) {
-        String s = b.getText();
-        int val = 0;
-        try {
-            val = Integer.parseInt(s);
-        } catch (Exception e) {
-            return 0;
-        }
-        return val;
-    }
-
-    /**
-     * Method that can reEnable individual buttons based on user input
-     * Input is aspose to be x,y cords of the button
-     */
-    public void reEnable_Buttons() {
-        int x = 0;
-        int y = 0;
-        String input = buttonEdit.getText();
-
-        //if input is all reEnables all disabled buttons
-        if (input.equals("all")) {
-            this.enable_all_buttons();
-        }
-
-        String[] vals = input.split(" ");
-        boolean inputs = false;
-        System.out.println(vals);
-        try {
-            x = Integer.parseInt(vals[0]);
-            y = Integer.parseInt(vals[1]);
-            inputs = true;
-        } catch (Exception e) {
-            System.out.println("bad inputs");
-            return;
-        }
-
-        if (x < allButtons.length && y < allButtons[0].length) {
-            allButtons[x][y].setVisible(true);
-        }
-
-    }
-
-    /**
-     * Helper function to change the players score. 
-     * This function is called when the submit button for editing scores is pressed.
-     */
-    public void changeScore() {
-        String input = changeScores.getText();
-        String[] vals = input.split(" ");
-        int score = 0;
-        int index = 0;
-        try {
-            index = Integer.parseInt(vals[0]);
-            score = Integer.parseInt(vals[1]);
-        } catch (Exception e) {
-            System.out.println("bad inputs");
-            return;
-        }
-        if (index < players.size()) {
-            players.get(index).setScore(score);
-            allScores.get(index).setText(Integer.toString(players.get(index).getScore()));
-        }
-    }
-
-    /**
-     * Creates the question board
-     *
-     * @param q the question and answer
+     * @param q An question object that is the question coresponding to a category/point value.
      */
     public void createQBoard(Question q) {
         //this.createQButtons();
@@ -584,14 +568,14 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         qboard.setVisible(true);
     }
     
+    //private varibles for the purpose of storing values below.
     private int val = 0;
     private int val1 = 0;
     private int val2 = 0;
     
     /**
-     * What happens when the button is pressed
-     * the private varibles are there to help retain information
-     *
+     * actionPerformed: This method handels what happens when 
+     * any of the buttons on the Qboard or Jboard are pressed
      * @param e Action event
      */
 
@@ -676,6 +660,8 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                 ans.setVisible(false);
             }
         }
+        
+        //If double jeoprady button is pressed on main board.
         if (e.getSource() == doubleJ) {
             DoubleJboard d = new DoubleJboard(players);
             d.getContentPane().setBackground(Color.WHITE);
@@ -690,7 +676,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     }
 
     /**
-     * Method where I input all the questions.
+     * createQuestions: This is the method wehre all the questions are made.
      */
     public void createQuestions() {
         for (int k = 0; k < categories.size(); k++) {
@@ -699,8 +685,18 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             }
         }
     }
-    
+    /**
+	 * percentDiffrence: Helper function to caculate the percent diffrence between two numbers.
+	 * @param one First value.
+	 * @param two Second value.
+	 * @return Double of the percent diffrence between the two numbers. Value is in form 55% not .55.
+	 */
+	public double percentDiffrence(double one, double two) {
+		return ( Math.abs(one - two) / ((one + two) / 2.) ) * 100.;
+	}
+	
     ///////////////////////////////********** Window and Compenent Events ****************\\\\\\\\\\\\\\\\\\\\\\\
+    //below is the code for listners most of it blank mthods because I did not need to use those function
     
 	@Override
 	public void windowOpened(WindowEvent e) {
@@ -708,7 +704,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 	}
 	
 	/**
-	 * method to kill program when window is closed.
+	 * windowClosing: method to kill program when window is closed.
 	 */
 	@Override
 	public void windowClosing(WindowEvent e) {
@@ -748,11 +744,12 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 		
 	}
 	
-	/////////////////////////****** Compenent Listner *******////////////////////////////
 	
 	/**
-	 * Compenent Resized: Overiding compenent risized method. Checks to see if Window is size has changed by more than 10%.
-	 * If the window size has changed by more than 10% then it changes screenWidth and Height and resizes the board.
+	 * Compenent Resized: Overiding compenent risized method. 
+	 * Checks to see if Window is size has changed by more than .1%.
+	 * If the window size has changed by more than .1% then it changes screenWidth and Height and resizes the board.
+	 * The .1% tolerence is so low because the lower tolerance gives a more smooth look when changing window sizes.
 	 */
 	@Override
 	public void componentResized(ComponentEvent e) {
@@ -771,15 +768,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 		}
 	}
 	
-	/**
-	 * Helper function to caculate the percent diffrence between two numbers.
-	 * @param one First value.
-	 * @param two Second value.
-	 * @return Double of the percent diffrence between the two numbers. Value is in form 55% not .55.
-	 */
-	public double percentDiffrence(double one, double two) {
-		return ( Math.abs(one - two) / ((one + two) / 2.) ) * 100.;
-	}
 
 	@Override
 	public void componentMoved(ComponentEvent e) {
