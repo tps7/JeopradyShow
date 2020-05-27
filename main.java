@@ -25,18 +25,20 @@ public class main {
 //        j.createbuttons();
 //        j.setLayout(null);
 //        j.setVisible(true);
-        
-        String[] cats = new String[] {"a", "b", "c", "d", "e", "f", "h", "i", "j", "l", "m"};
-        String[] people = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    	
+        // "m", "n", "o", "p", "q", "r", "s", "t"
+        String[] cats = new String[] {"a", "b", "c", "d", "e", "f", "h", "i", "j", "l", 
+        		"m", "n", "o", "p", "q", "r", "s", "t"};
+        String[] people = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
         
         Jboard2 j2 = new Jboard2(cats, people);
         j2.getContentPane().setBackground(Color.WHITE);
-        //j2.setSize(j2.getScreenWidth(), j2.getScreenHeight());
-        j2.setSize(500, 500);
+        j2.setSize(j2.getScreenWidth(), j2.getScreenHeight());
+        //j2.setSize(500, 500);
         j2.createboard();
-        j2.createScoreboard();
+        //j2.createScoreboard();
         j2.createQuestions();
-        j2.createbuttons();
+        //j2.createbuttons();
         j2.getContentPane().setLayout(null);
         j2.setVisible(true);
         System.out.println(j2.getScreenWidth());

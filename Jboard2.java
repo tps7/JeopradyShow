@@ -22,11 +22,11 @@ public class Jboard2 extends JFrame implements ActionListener {
     /**
      * Screen Width
      */
-    private int screenWidth = 500;//(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    private int screenWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     /**
      * Screen Height
      */
-    private int screenHeight = 500;//(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    private int screenHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     
     /**
      * categories
@@ -34,7 +34,7 @@ public class Jboard2 extends JFrame implements ActionListener {
     private ArrayList<category> categories = new ArrayList<category>();
     
     /**
-     * 
+     * players
      */
     private ArrayList<Player> players = new ArrayList<Player>();
     
@@ -200,12 +200,19 @@ public class Jboard2 extends JFrame implements ActionListener {
     /**
      * all Queston buttons
      */
-    private JButton[] allQButtons = new JButton[9];
+    private JButton[] allQButtons;
     /**
      * the answer to the question
      */
     private JLabel ans = new JLabel("", SwingConstants.CENTER);
 
+    //can make these nonprivate when everything is in create board
+//    private int widthIncrementor = (int) ((8./9.) * screenWidth - (screenWidth / 8.)) 
+//    		/ numCategories;
+//    private int widthDivider = (int) screenWidth / widthIncrementor;
+//    private int heightIncrementor = (int) ((2./3.) * screenHeight - screenHeight / 4.) 
+//    		/ 5;
+//    private int heightDivider = (int) screenHeight / heightIncrementor;
     
     /**
      * This methods creates the title and the labels for all the categories and any other miscilanous things on the board
@@ -276,35 +283,33 @@ public class Jboard2 extends JFrame implements ActionListener {
         doubleJ.setBounds((int) (screenWidth / 7.2), screenHeight / 15, (int) (screenWidth / 9.6), screenHeight / 18);
         doubleJ.addActionListener(this);
         add(doubleJ);
-
+        
+        x = screenWidth / 8;
+        y = screenHeight / 4;
+        int widthIncrementor = (int) ((8./9.) * screenWidth - x) / numCategories;
+        int widthDivider = (int) screenWidth / widthIncrementor;
+        int heightIncrementor = (int) ((2./3.) * screenHeight - y) / 5;
+        int heightDivider = (int) screenHeight / heightIncrementor;
+        
         //Create labels for categories
         int w = screenWidth / 8;
         for (int k = 0; k < categories.size(); k++) {
             JLabel subject = new JLabel(categories.get(k).getCname(), SwingConstants.CENTER);
             subject.setFont(new Font("TimesRoman", 0, screenHeight / 37));
-            subject.setBounds(w, screenHeight / 6, (int) (screenWidth / 14.4), screenHeight / 12);
+            subject.setBounds(w, screenHeight / 6, (int) (screenWidth / widthDivider), 
+            		screenHeight / heightDivider);
             subject.setBorder(border);
             add(subject);
-            w += (int) (screenWidth / 14.4);
+            w += widthIncrementor;
         }
-
-    }
-
-    /**
-     * This method creates all the Score Buttons
-     * Should be Void?
-     * Should be in create board?
-     * @return a 2d array of all the score buttons
-     */
-    public JButton[][] createbuttons() {
+        
+        int x2 = screenWidth / 8;
+        int y2 = screenHeight / 4;
+        
+        //create buttons
         JButton[][] buttons = new JButton[numCategories][5];
-        int x = screenWidth / 8;
-        int y = screenHeight / 6 + screenHeight / 12;
         Integer val = 100;
         String value = val.toString();
-        double widthDivider = (1 / numCategories) * 10;
-        double heightDivider = 1 / 12;
-
         //making all buttons and assigning values
         for (int k = 0; k < buttons.length; k++) {
             for (int j = 0; j < buttons[0].length; j++) {
@@ -313,21 +318,50 @@ public class Jboard2 extends JFrame implements ActionListener {
                 buttons[k][j].setEnabled(true);
                 buttons[k][j].addActionListener(this);
                 //buttons[k][j].setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-                
-                buttons[k][j].setBounds(x, y, (int) (screenWidth / 14.4), screenHeight / 12);
+                //buttons[k][j].setBounds(x, y, (int) (screenWidth / 14.4), screenHeight / 12);
+                buttons[k][j].setBounds(x2, y2, (int) (screenWidth / widthDivider), screenHeight / heightDivider);
                 add(buttons[k][j]);
                 val += 100;
                 value = val.toString();
-                y += screenHeight / 12;
+                y2 += heightIncrementor;
             }
-            x += (int) (screenWidth / 14.4);
+            x2 += widthIncrementor;
             val = 100;
             value = val.toString();
-            y = screenHeight / 6 + screenHeight / 12;
+            y2 = screenHeight / 4;
         }
         allButtons = buttons;
-        return buttons;
+        
+        x2 = screenWidth / 8;
+        
+        //make scoreboard
+        int labelwIncrementor = (int) ((8./9.) * screenWidth - x2) / numPlayers;
+        int labelwDivider = screenWidth / labelwIncrementor;
+        Font f = new Font("TimesRoman", 0, screenHeight / 28);
+        //Border border2 = BorderFactory.createLineBorder(Color.BLACK, 1);
+        for (int k = 0; k < players.size(); k++) {
+            JLabel pname = new JLabel(players.get(k).getName(), SwingConstants.CENTER);
+            JLabel scores = new JLabel(Integer.toString(players.get(k).getScore()), SwingConstants.CENTER);
+            pname.setFont(f);
+            scores.setFont(f);
+            //height is good here. placment at 3/4 of height with length of height/18.
+            //Maybe go back and make width so it lines up with first and last column of buttons? 
+            scores.setBounds(x2, screenHeight * 3 / 4, (int) (screenWidth / labelwDivider), screenHeight / 18);
+            //height here same as above but position is below (this is why the h/18 * 1.3 is below)
+            pname.setBounds(x2, screenHeight * 3 / 4 + (int) (screenHeight / 18 * 1.3),
+                    (int) (screenWidth / labelwDivider), screenHeight / 18);
+            x2 += labelwIncrementor;
+            //x += (int) (screenWidth / 11.5);
+            allScores.add(scores);
+            add(pname);
+            
+            add(scores);
+        }
+        
+        
     }
+
+  
 
     /**
      * method that enables all buttons
@@ -336,7 +370,6 @@ public class Jboard2 extends JFrame implements ActionListener {
         for (int k = 0; k < allButtons.length; k++) {
             for (int j = 0; j < allButtons[0].length; j++) {
                 allButtons[k][j].setVisible(true);
-                //test
             }
         }
 
@@ -392,7 +425,8 @@ public class Jboard2 extends JFrame implements ActionListener {
     }
 
     /**
-     * changes the score
+     * Helper function to change the players score. 
+     * This function is called when the submit button for editing scores is pressed.
      */
     public void changeScore() {
         String input = changeScores.getText();
@@ -412,54 +446,32 @@ public class Jboard2 extends JFrame implements ActionListener {
         }
     }
 
-
-    /**
-     * Creates the scoreboard
-     */
-    public void createScoreboard() {
-        Font f = new Font("TimesRoman", 0, screenHeight / 28);
-        int x = screenWidth / 8;
-        Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
-        for (int k = 0; k < players.size(); k++) {
-            JLabel pname = new JLabel(players.get(k).getName(), SwingConstants.CENTER);
-            JLabel scores = new JLabel(Integer.toString(players.get(k).getScore()), SwingConstants.CENTER);
-            pname.setFont(f);
-            scores.setFont(f);
-            scores.setBounds(x, screenHeight * 3 / 4, (int) (screenWidth / 14.4), screenHeight / 18);
-            pname.setBounds(x, screenHeight * 3 / 4 + (int) (screenHeight / 18 * 1.3),
-                    (int) (screenWidth / 14.4), screenHeight / 18);
-            x += (int) (screenWidth / 11.5);
-            allScores.add(scores);
-            add(pname);
-            add(scores);
-        }
-    }
-
-    /**
-     * Creates question board butttons
-     */
-    public void createQButtons() {
-        qboard = new JDialog();
-        int x = (int) (screenWidth / 9.6);
-        int y = screenHeight * 2 / 3;
-        for (int k = 0; k < players.size(); k++) {
-            JButton person = new JButton(players.get(k).getName());
-            person.setBounds(x, y, (int) (screenWidth / 14.4), screenHeight / 18);
-            person.addActionListener(this);
-            person.setVisible(false);
-            qboard.add(person);
-            allQButtons[k] = person;
-            x += (screenWidth / 11.5);
-        }
-    }
-
     /**
      * Creates the question board
      *
      * @param q the question and answer
      */
     public void createQBoard(Question q) {
-        this.createQButtons();
+        //this.createQButtons();
+    	
+    	//creating qbuttons
+        JButton[] qbuttons = new JButton[numPlayers];
+        qboard = new JDialog();
+        int x = (int) (screenWidth / 9.6);
+        int y = screenHeight * 2 / 3;
+        int qxIncrementor = (int) ((8./9.) * screenWidth - x) / numPlayers;
+        int qxDivider = screenWidth / qxIncrementor;
+        for (int k = 0; k < players.size(); k++) {
+            JButton person = new JButton(players.get(k).getName());
+            person.setBounds(x, y, (int) (screenWidth /qxDivider), screenHeight / 18);
+            person.addActionListener(this);
+            person.setVisible(false);
+            qboard.add(person);
+            qbuttons[k] = person;    
+            x += qxIncrementor;//(screenWidth / 11.5);
+        }
+        allQButtons = qbuttons;
+        
         Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
         Font f = new Font("TimesRoman", 1, screenHeight / 25);
         Font a = new Font("TimesRoman", 0, screenHeight / 45);
@@ -571,6 +583,7 @@ public class Jboard2 extends JFrame implements ActionListener {
             showAns.setVisible(false);
             ans.setVisible(true);
             for (int k = 0; k < allQButtons.length; k++) {
+            	//not set yet or null pointer error here
                 allQButtons[k].setVisible(true);
             }
         }
@@ -618,6 +631,48 @@ public class Jboard2 extends JFrame implements ActionListener {
         }
     }
     
+    
+    /**
+     * This method creates all the Score Buttons
+     * Should be Void?
+     * Should be in create board?
+     * @return a 2d array of all the score buttons
+     */
+//    public JButton[][] createbuttons() {
+//        JButton[][] buttons = new JButton[numCategories][5];
+//        int x = screenWidth / 8;
+//        int y = screenHeight / 4; //screenHeight / 6 + screenHeight / 12;
+//        Integer val = 100;
+//        String value = val.toString();
+//        int widthIncrementor = (int) ((8./9.) * screenWidth - x) / numCategories;
+//        int widthDivider = (int) screenWidth / widthIncrementor;
+//        int heightIncrementor = (int) ((2./3.) * screenHeight - y) / buttons[0].length;
+//        int heightDivider = (int) screenHeight / heightIncrementor;
+//        
+//
+//        //making all buttons and assigning values
+//        for (int k = 0; k < buttons.length; k++) {
+//            for (int j = 0; j < buttons[0].length; j++) {
+//                buttons[k][j] = new JButton();
+//                buttons[k][j].setText(value);
+//                buttons[k][j].setEnabled(true);
+//                buttons[k][j].addActionListener(this);
+//                //buttons[k][j].setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+//                //buttons[k][j].setBounds(x, y, (int) (screenWidth / 14.4), screenHeight / 12);
+//                buttons[k][j].setBounds(x, y, (int) (screenWidth / widthDivider), screenHeight / heightDivider);
+//                add(buttons[k][j]);
+//                val += 100;
+//                value = val.toString();
+//                y += heightIncrementor;
+//            }
+//            x += widthIncrementor;
+//            val = 100;
+//            value = val.toString();
+//            y = screenHeight / 4;
+//        }
+//        allButtons = buttons;
+//        return buttons;
+//    }
     
 
 }
