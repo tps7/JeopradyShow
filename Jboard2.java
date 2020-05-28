@@ -23,8 +23,9 @@ import java.math.*;
  * Accomadate a diffrent number of questions per category.
  * Accomadate diffrent point values per category.
  * Include Daily Doubles. Weigh probablility towards begining.
- * Change some methods to private or maybe change some varibles to public
+ * Change some methods to private or maybe change some varibles to public or protected
  * Add a button and function that allows you to save the game and lode it later.
+ * Adjust bounds for things like Title. When you don't have same length things are a bit off.
  * 
  * @author timothysullivan
  *
@@ -651,12 +652,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	
         	String[] c = new String[] {"z", "y", "x", "v", "w", "u", "t"};
         	DoubleJboard2 d = new DoubleJboard2(players, c);
-            //DoubleJboard d = new DoubleJboard(players);
-        	
             d.getContentPane().setBackground(Color.WHITE);
             d.setSize(d.getScreenWidth(), d.getScreenHeight());
             d.createboard();
-            System.out.println(d.players.size());
             //d.createScoreboard();
             d.createQuestions();
             //d.createbuttons();
@@ -778,9 +776,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 	@Override
 	public void componentResized(ComponentEvent e) {
 		// TODO Auto-generated method stub
-		//System.out.println("dflasdlkjdf");
-		//System.out.println(getAlignmentX());
-		//System.out.println(getBounds());
+		//System.out.println("1308745324");
 		double nwidth = getBounds().width;
 		double nheight = getBounds().height;
 		if (percentDiffrence(screenWidth, nwidth) > .1 || percentDiffrence(screenHeight, nheight) > .1) {

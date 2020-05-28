@@ -16,11 +16,12 @@ import java.math.*;
  * 
  * TODO
  * Add final Jeoprody method.
+ * Make it so its Buttons have diffrent point values. This should incorporated into Jboard first.
  * 
  * @author timothysullivan
  *
  */
-public class DoubleJboard2 extends Jboard2 {
+public class DoubleJboard2 extends Jboard2 implements WindowListener  {
 
 	/**
 	 * Screen Width
@@ -42,9 +43,11 @@ public class DoubleJboard2 extends Jboard2 {
 		categories = makeCategories(cnames);
 		numCategories = cnames.length;
 		numPlayers = p.size();
-		allQButtons = new JButton[numPlayers];
-		title.setText("Double Jeoprady");
+		//allQButtons = new JButton[numPlayers];
+		title.setText("FFLC 89 2020 Double Jeoprady");
 		doubleJ.setVisible(false);
+		addWindowListener(this);
+		addComponentListener(this);
 	}
 	
 	//maybe fix so its not the same method as in Jboard
@@ -56,8 +59,10 @@ public class DoubleJboard2 extends Jboard2 {
 		}
 		return cats;
 	}
-
-
-
-
+	
+	// Makes it so you don't leave app when closing DJ window disabled now for editing purposes.
+//	@Override
+//	public void windowClosing(WindowEvent e) {
+//		// TODO Auto-generated method stub
+//	}
 }
