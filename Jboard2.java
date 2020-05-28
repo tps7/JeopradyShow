@@ -23,13 +23,15 @@ import java.math.*;
  * Accomadate a diffrent number of questions per category.
  * Accomadate diffrent point values per category.
  * Include Daily Doubles. Weigh probablility towards begining.
+ * Change some methods to private or maybe change some varibles to public
+ * Add a button and function that allows you to save the game and lode it later.
  * 
  * @author timothysullivan
  *
  */
 public class Jboard2 extends JFrame implements ActionListener, WindowListener, ComponentListener {  
-	//Private Varibles
-	//Genral varibles
+	//Private and Protected Varibles
+	//General varibles
     /**
      * Screen Width
      */
@@ -42,22 +44,22 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     /**
      * categories
      */
-    private ArrayList<category> categories = new ArrayList<category>();
+    protected ArrayList<category> categories = new ArrayList<category>();
     
     /**
      * players
      */
-    private ArrayList<Player> players = new ArrayList<Player>();
+    protected ArrayList<Player> players = new ArrayList<Player>();
     
     /**
      * An interger storing the number of categories.
      */
-    private int numCategories;
+    protected int numCategories;
     
     /**
      * An integer storing the number of players.
      */
-    private int numPlayers;
+    protected int numPlayers;
     
     //varibles for things on Jboard Like buttons and labels
     
@@ -82,13 +84,17 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      */
     private JButton submit1 = new JButton("Submit");
     /**
+     * double jeoprady button
+     */
+    protected JButton doubleJ = new JButton("Double Jeoprady");
+    /**
      * reEnable buttons input field
      */
     private JTextField buttonEdit = new JTextField("");
     /**
      * JLabel for the game title.
      */
-    private JLabel title = new JLabel("FFLC 89 2020 Jeopardy");
+    protected JLabel title = new JLabel("FFLC 89 2020 Jeopardy");
     /**
      * reEnable buttons input label
      */
@@ -117,10 +123,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * Arraylist that holds all the labels of the scores.
      */
     private ArrayList<JLabel> allCategories = new ArrayList<JLabel>();
-    /**
-     * double jeoprady button
-     */
-    private JButton doubleJ = new JButton("Double Jeoprady");
 
     //Qboard vars
 
@@ -139,7 +141,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     /**
      * all Queston buttons
      */
-    private JButton[] allQButtons;
+    protected JButton[] allQButtons;
     /**
      * the answer to the question
      */
@@ -168,6 +170,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     }
     
     
+    
     /**
      * setcategories: Helper function that sets the name of the categories and 
      * adds the categories to the categories arraylist.
@@ -179,6 +182,10 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     		categories.add(c);
     	}
     	return;
+    }
+    
+    public ArrayList<Player> getPlayers() {
+    	return players;
     }
     
     /**
@@ -436,12 +443,12 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             pname.setBounds(x, screenHeight * 3 / 4 + (int) (screenHeight / 18 * 1.3),
                     (int) (screenWidth / labelwDivider), screenHeight / 18);
             x += labelwIncrementor;
-            //x += (int) (screenWidth / 11.5);
             allScores.add(scores);
             allNames.add(pname);
             add(pname);
             add(scores);
         }
+        int q = 5;
     }
     
     /**
@@ -576,9 +583,11 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     /**
      * actionPerformed: This method handels what happens when 
      * any of the buttons on the Qboard or Jboard are pressed
+     * Returns after each button is pressed because will the method
+     * run each time there is a button pressed (action event).
+     * This prevents Null pointer errors and redundency because each action can only happen once.
      * @param e Action event
      */
-
     @Override
     public void actionPerformed(ActionEvent e) {
         //If one of the number buttons is clicked
@@ -593,6 +602,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                         this.createQBoard(categories.get(k).getQuestion(j));
                         //val = categories.get(k).getQuestion(j).getValue();
                     }
+                    return;
                 }
             }
         }
@@ -607,6 +617,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             submit2.setVisible(true);
             changeScoresText.setVisible(true);
             changeScores.setVisible(true);
+            return;
         }
 
         //If the done button is clicked
@@ -619,19 +630,42 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             submit2.setVisible(false);
             changeScoresText.setVisible(false);
             changeScores.setVisible(false);
+            return;
         }
 
         //Submit button for editing buttons
         if (e.getSource() == submit1) {
             reEnable_Buttons();
+            return;
         }
 
         //Submit button for editng scores
         if (e.getSource() == submit2) {
             changeScore();
+            return;
+        }
+        
+      //If double jeoprady button is pressed on main board.
+        //This creates and opens a double jeoprady board.
+        if (e.getSource() == doubleJ) {
+        	
+        	String[] c = new String[] {"z", "y", "x", "v", "w", "u", "t"};
+        	DoubleJboard2 d = new DoubleJboard2(players, c);
+            //DoubleJboard d = new DoubleJboard(players);
+        	
+            d.getContentPane().setBackground(Color.WHITE);
+            d.setSize(d.getScreenWidth(), d.getScreenHeight());
+            d.createboard();
+            System.out.println(d.players.size());
+            //d.createScoreboard();
+            d.createQuestions();
+            //d.createbuttons();
+            d.setLayout(null);
+            d.setVisible(true);
+        	return;
         }
 
-        //Qboard
+        //Qboard no JBoard should come after this because it causes null pointer errors. 
         //if show answer button is clicked
         if (e.getSource() == showAns) {
             showAns.setVisible(false);
@@ -639,6 +673,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             for (int k = 0; k < allQButtons.length; k++) {
                 allQButtons[k].setVisible(true);
             }
+            return;
         }
 
         //if go back is clicked
@@ -647,7 +682,8 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             showAns.setVisible(true);
             ans.setVisible(false);
             System.out.println();
-            allButtons[val1][val2].setVisible( false);
+            allButtons[val1][val2].setVisible(false);
+            return;
         }
 
         //If one of the player buttons on Qboard is pressed. tells us who won and brings us back to the scoreboard
@@ -658,21 +694,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                 qboard.dispose();
                 showAns.setVisible(true);
                 ans.setVisible(false);
+                return;
             }
-        }
-        
-        //If double jeoprady button is pressed on main board.
-        if (e.getSource() == doubleJ) {
-            DoubleJboard d = new DoubleJboard(players);
-            d.getContentPane().setBackground(Color.WHITE);
-            d.setSize(d.getScreenWidth(), d.getScreenHeight());
-            d.createboard();
-            d.createScoreboard();
-            d.createQuestions();
-            d.createbuttons();
-            d.setLayout(null);
-            d.setVisible(true);
-        }
+        }   
     }
 
     /**
