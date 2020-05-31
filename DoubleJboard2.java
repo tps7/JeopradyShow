@@ -48,6 +48,8 @@ public class DoubleJboard2 extends Jboard2 implements WindowListener  {
 		doubleJ.setVisible(false);
 		addWindowListener(this);
 		addComponentListener(this);
+		nCQs = 5;
+		createQuestions();
 	}
 	
 	//maybe fix so its not the same method as in Jboard

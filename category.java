@@ -40,17 +40,22 @@ public class category {
 
     }
     public Question getQuestion(int index) {
-        if (index < 5) {
-            try {
-                questions.get(index);
-            } catch (Exception e) {
-                return new Question(this.getCname(), 100, "test", "sucess");
-            }
-            return questions.get(index);
-
-        } else {
-            return null;
-        }
+    	if (index >= questions.size()) {
+    		return null;
+    	} else {
+    		return questions.get(index);
+    	}
+//        if (index < 10) {
+//            try {
+//                questions.get(index);
+//            } catch (Exception e) {
+//                return new Question(this.getCname(), 100, "test", "sucess");
+//            }
+//            return questions.get(index);
+//
+//        } else {
+//            return null;
+//        }
     }
 /**if (val == 100) {
         questions[0] = new Question(this.getCname(), val, question, answer);

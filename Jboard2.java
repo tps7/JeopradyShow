@@ -20,12 +20,19 @@ import java.math.*;
  * Make Qboard appear on same screen as JBoard.
  * Allign player name and points with right and left end of button columns.
  * Adjust Font sizes so it changes more dynamically so you can always read font.
- * Accomadate a diffrent number of questions per category.
+ * Accomadate a diffrent number of questions per category. (DONE)
  * Accomadate diffrent point values per category.
  * Include Daily Doubles. Weigh probablility towards begining.
  * Change some methods to private or maybe change some varibles to public or protected
  * Add a button and function that allows you to save the game and lode it later.
  * Adjust bounds for things like Title. When you don't have same length things are a bit off.
+ * Comment all the other classes.
+ * Decrease spacing between scoreboard and end of the buttons.
+ * Change Colors to normal Jeoprady.
+ * Make sizing better.
+ * Add Audio text reader.
+ * Option to create Jboard with given questions and values in a list of questions.
+ * Create adjusted Scroreboard where winners are in certain order? or a scoreboard on side.
  * 
  * @author timothysullivan
  *
@@ -62,6 +69,15 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      */
     protected int numPlayers;
     
+    /**
+     * An interger stroing the number of questions per category. The default value is 5.
+     */
+    protected int nCQs;
+    
+    /**
+     * The point values for each question default is increments by 100.
+     */
+    protected int[] qvals = new int[] {};
     //varibles for things on Jboard Like buttons and labels
     
     /**
@@ -157,7 +173,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     Jboard2() {}
     
     /**
-     * This is the Jboard constructor used to construct the jeoprady board without given player points
+     * This is the Jboard constructor used to construct the jeoprady board without given player points.
+     * This is the default Jboard constructor meaning it is set to the default 5 questions
+     * with point values 100-500.
      * @param categories_names An array of strings. The strings are the names of the categories.
      * @param playerNames The names of the players.
      */
@@ -168,6 +186,44 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     	numPlayers = players.size();
     	addWindowListener(this); 
     	addComponentListener(this);
+    	nCQs = 5;
+    	createQuestions();
+    }
+    
+    /**
+     * Same as default constructor with added num CategoryQ's
+     * @param categories_names 
+     * @param playerNames
+     * @param numCategoryQs The number of questions per category.
+     */
+    Jboard2(String[] categories_names,String[] playerNames, int numCategoryQs) {
+    	setcategories(categories_names);
+    	makePlayers(playerNames);
+    	numCategories = categories.size();
+    	numPlayers = players.size();
+    	addWindowListener(this); 
+    	addComponentListener(this);
+    	nCQs = numCategoryQs;
+    	createQuestions();
+    }
+    
+    /**
+     * same as default with questions values added.
+     * @param categories_names
+     * @param playerNames
+     * @param numCategoryQs
+     * @param questionValues The point value for each question row.
+     */
+    Jboard2(String[] categories_names,String[] playerNames, int numCategoryQs, int[] questionValues) {
+    	setcategories(categories_names);
+    	makePlayers(playerNames);
+    	numCategories = categories.size();
+    	numPlayers = players.size();
+    	addWindowListener(this); 
+    	addComponentListener(this);
+    	nCQs = numCategoryQs;
+    	qvals = questionValues;
+    	createQuestions();
     }
     
     
@@ -380,7 +436,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         int y = screenHeight / 4;
         int widthIncrementor = (int) ((8./9.) * screenWidth - x) / numCategories;
         int widthDivider = (int) screenWidth / widthIncrementor;
-        int heightIncrementor = (int) ((2./3.) * screenHeight - y) / 5;
+        int heightIncrementor = (int) ((2./3.) * screenHeight - y) / nCQs;
         int heightDivider = (int) screenHeight / heightIncrementor;
         
         //Create labels for categories
@@ -389,7 +445,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             JLabel subject = new JLabel(categories.get(k).getCname(), SwingConstants.CENTER);
             subject.setFont(new Font("TimesRoman", 0, screenHeight / 37));
             subject.setBounds(w, screenHeight / 6, (int) (screenWidth / widthDivider), 
-            		screenHeight / heightDivider);
+            		screenHeight / 4 - screenHeight / 6);
             subject.setBorder(border);
             add(subject);
             allCategories.add(subject);
@@ -400,12 +456,15 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         y = screenHeight / 4;
         
         //create buttons
-        JButton[][] buttons = new JButton[numCategories][5];
-        Integer val = 100;
-        String value = val.toString();
+        JButton[][] buttons = new JButton[numCategories][nCQs];
+        Integer val = 0; //categories.get(0).getQuestion(0).getValue();
+        String value = "";//val.toString();
         //making all buttons and assigning values
         for (int k = 0; k < buttons.length; k++) {
             for (int j = 0; j < buttons[0].length; j++) {
+            	val = categories.get(k).getQuestion(j).getValue();
+            	//System.out.println(val);
+                value = val.toString();
                 buttons[k][j] = new JButton();
                 buttons[k][j].setText(value);
                 buttons[k][j].setEnabled(true);
@@ -414,13 +473,13 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                 //buttons[k][j].setBounds(x, y, (int) (screenWidth / 14.4), screenHeight / 12);
                 buttons[k][j].setBounds(x, y, (int) (screenWidth / widthDivider), screenHeight / heightDivider);
                 add(buttons[k][j]);
-                val += 100;
-                value = val.toString();
+//                val += 100;
+//                value = val.toString();
                 y += heightIncrementor;
             }
             x += widthIncrementor;
-            val = 100;
-            value = val.toString();
+            //val = 100;
+            //value = val.toString();
             y = screenHeight / 4;
         }
         allButtons = buttons;
@@ -449,7 +508,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             add(pname);
             add(scores);
         }
-        int q = 5;
     }
     
     /**
@@ -492,12 +550,12 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         int y = screenHeight / 4;
     	int widthIncrementor = (int) ((8./9.) * screenWidth - x) / numCategories;
         int widthDivider = (int) screenWidth / widthIncrementor;
-        int heightIncrementor = (int) ((2./3.) * screenHeight - y) / 5;
+        int heightIncrementor = (int) ((2./3.) * screenHeight - y) / nCQs; //Should height incrementro be changed for Qnum?
         int heightDivider = (int) screenHeight / heightIncrementor;
         
         for (int k = 0; k < allButtons.length; k++) {
         	allCategories.get(k).setBounds(x, screenHeight / 6, (int) (screenWidth / widthDivider), 
-            		screenHeight / heightDivider);
+        		screenHeight / 4 - screenHeight / 6);
         	for (int j = 0; j < allButtons[0].length; j++) {
         		allButtons[k][j].setBounds(x, y, (int) (screenWidth / widthDivider), screenHeight / heightDivider);
         		y += heightIncrementor;
@@ -698,12 +756,16 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     }
 
     /**
-     * createQuestions: This is the method wehre all the questions are made.
+     * createQuestions: This is the method where all the questions are made.
      */
     public void createQuestions() {
         for (int k = 0; k < categories.size(); k++) {
-            for (int j = 100; j < 600; j += 100) {
-                categories.get(k).addQuestion(j, "question", "answer");
+            for (int j = 1; j < nCQs + 1; j++) {
+            	if (qvals.length == nCQs) {
+            		categories.get(k).addQuestion(qvals[j - 1], "question", "answer");
+            	} else {
+            		categories.get(k).addQuestion(j * 100, "question", "answer");
+            	}
             }
         }
     }
