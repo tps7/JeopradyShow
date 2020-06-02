@@ -31,8 +31,10 @@ public class main {
 //        j.setVisible(true);
     	
         // "m", "n", "o", "p", "q", "r", "s", "t"
-        String[] cats = new String[] {"a", "b", "c", "d", "e", "f", "h", "i", "j", "l"};
-        String[] people = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
+        //String[] cats = new String[] {"a", "b", "c", "d", "e", "f", "h", "i", "j", "l"};
+        String[] cats = new String[] {"a", "b", "c", "d"};
+        //String[] people = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
+        String[] people = new String[] {"1", "2", "3"};
         int[] pointVals = new int[] {100, 200, 300, 400, 500, 600, 750};
         Jboard2 j2 = new Jboard2(cats, people, 7, pointVals);
         j2.getContentPane().setBackground(Color.WHITE);
