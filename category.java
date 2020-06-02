@@ -6,10 +6,22 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.Font;
 
+/**
+ * Class of category project. This object stores a category name and a list of questions.
+ * @author timothysullivan
+ *
+ */
 public class category {
     category() {}
+    /**
+     * The Questions in the category.
+     */
     private ArrayList<Question> questions = new ArrayList<Question>();
+    /**
+     * The category name.
+     */
     private String cname;
+    
     category(String s) {
         cname = s;
     }
@@ -17,15 +29,30 @@ public class category {
         cname = s;
         questions = q;
     }
+    
+    /**
+     * getCname: Gets the name of the category.
+     * @return Name of the category as a String.
+     */
     public String getCname() {
         return cname;
     }
+    /**
+     * addQuestion: Adds a question to the category arraylist. 
+     * Auto sorts questions from lowest to highest point values.
+     * @param val The point value of the question.
+     * @param question The question itself.
+     * @param answer The answer to the question.
+     */
     public void addQuestion(int val, String question, String answer) {
         questions.add(new Question(this.getCname(), val, question, answer));
         this.sortQ();
 
     }
-    ////
+    /**
+     * sortQ: Sorts the questions in order from lowest to highest.
+     * This method is called in the addQuestion method.
+     */
     public void sortQ() {
         for (int k = 1; k < questions.size(); k++) {
             Question current = questions.get(k);
@@ -39,39 +66,16 @@ public class category {
 
 
     }
+    /**
+     * getQuestion: Gets the question at a given index.
+     * @param Index The index of the question you want.
+     * @return Null if the index is invalid. Otherwise returns a question object at the given index.
+     */
     public Question getQuestion(int index) {
     	if (index >= questions.size()) {
     		return null;
     	} else {
     		return questions.get(index);
     	}
-//        if (index < 10) {
-//            try {
-//                questions.get(index);
-//            } catch (Exception e) {
-//                return new Question(this.getCname(), 100, "test", "sucess");
-//            }
-//            return questions.get(index);
-//
-//        } else {
-//            return null;
-//        }
     }
-/**if (val == 100) {
-        questions[0] = new Question(this.getCname(), val, question, answer);
-    } else if (val == 200) {
-        questions[1] = new Question(this.getCname(), val, question, answer);
-    } else if (val == 300) {
-        questions[2] = new Question(this.getCname(), val, question, answer);
-    } else if (val == 400) {
-        questions[3] = new Question(this.getCname(), val, question, answer);
-    } else if (val == 500) {
-        questions[4] = new Question(this.getCname(), val, question, answer);
-    } else { }
-
- if (questions.get(index) == null) {
- return new Question(this.getCname(), 100, "test", "sucess");
- } else {
- return questions.get(index);
- }*/
 }

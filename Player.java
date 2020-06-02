@@ -1,5 +1,8 @@
 /**
- * class of Player object. Player object holds the name and score of the players.
+ * Class of the player object. This object represents the player who plays the game.
+ * This object stores a int score and a string name.
+ * @author timothysullivan
+ *
  */
 public class Player {
     private int score;

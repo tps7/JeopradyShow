@@ -16,12 +16,12 @@ import java.math.*;
  * It implements action, window, and compenent listners.
  * 
  * TODO most of these are not need for function but are extra things to do if time.
- * Make Qboard so it dynamically resizes.
+ * Make Qboard so it dynamically resizes. (DONE)
  * Make Qboard appear on same screen as JBoard.
  * Allign player name and points with right and left end of button columns.
  * Adjust Font sizes so it changes more dynamically so you can always read font.
  * Accomadate a diffrent number of questions per category. (DONE)
- * Accomadate diffrent point values per category.
+ * Accomadate diffrent point values per category.(DONE)
  * Include Daily Doubles. Weigh probablility towards begining.
  * Change some methods to private or maybe change some varibles to public or protected
  * Add a button and function that allows you to save the game and lode it later.
@@ -33,6 +33,7 @@ import java.math.*;
  * Add Audio text reader.
  * Option to create Jboard with given questions and values in a list of questions.
  * Create adjusted Scroreboard where winners are in certain order? or a scoreboard on side.
+ * Make it so Double Jeoprady Button is disabled/does not appear until all buttons are clicked.ß
  * 
  * @author timothysullivan
  *
@@ -333,7 +334,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 
         String[] vals = input.split(" ");
         boolean inputs = false;
-        //System.out.println(vals);
         try {
             x = Integer.parseInt(vals[0]);
             y = Integer.parseInt(vals[1]);
@@ -443,9 +443,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         int x = screenWidth / 8;
         int y = screenHeight / 6;
         int widthIncrementor = (int) ((8./9.) * screenWidth - x) / numCategories;
-        //int widthDivider = (int) screenWidth / widthIncrementor;
         int heightIncrementor = (int) ((2./3.) * screenHeight - y) / nCQs;
-        //int heightDivider = (int) screenHeight / heightIncrementor;
         
         /**
          * Label Dimensions.
@@ -457,7 +455,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
          */
         
         //Create labels for categories
-        //int w = screenWidth / 8;
         for (int k = 0; k < categories.size(); k++) {
             JLabel subject = new JLabel(categories.get(k).getCname(), SwingConstants.CENTER);
             subject.setFont(new Font("TimesRoman", 0, screenHeight / 37));
@@ -482,31 +479,22 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         
         //create buttons
         JButton[][] buttons = new JButton[numCategories][nCQs];
-        Integer val = 0; //categories.get(0).getQuestion(0).getValue();
-        String value = "";//val.toString();
+        Integer val = 0; 
+        String value = "";
         //making all buttons and assigning values
         for (int k = 0; k < buttons.length; k++) {
             for (int j = 0; j < buttons[0].length; j++) {
             	val = categories.get(k).getQuestion(j).getValue();
-            	//System.out.println(val);
                 value = val.toString();
                 buttons[k][j] = new JButton();
                 buttons[k][j].setText(value);
                 buttons[k][j].setEnabled(true);
                 buttons[k][j].addActionListener(this);
-                //buttons[k][j].setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-                //buttons[k][j].setBounds(x, y, (int) (screenWidth / 14.4), screenHeight / 12);
-                //buttons[k][j].setBounds(x, y, (int) (screenWidth / widthDivider), screenHeight / heightDivider);
                 buttons[k][j].setBounds(x, y, widthIncrementor, heightIncrementor);
-                //buttons[k][j].setMargin();
                 add(buttons[k][j]);
-//                val += 100;
-//                value = val.toString();
                 y += heightIncrementor;
             }
             x += widthIncrementor;
-            //val = 100;
-            //value = val.toString();
             y = screenHeight / 4;
         }
         allButtons = buttons;
@@ -524,7 +512,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         
         //make scoreboard
         int labelwIncrementor = (int) ((8./9.) * screenWidth - x) / numPlayers;
-        //int labelwDivider = screenWidth / labelwIncrementor;
         Font f = new Font("TimesRoman", 0, screenHeight / 28);
         Border border2 = BorderFactory.createLineBorder(Color.BLACK, 1);
         for (int k = 0; k < players.size(); k++) {
@@ -532,8 +519,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             JLabel scores = new JLabel(Integer.toString(players.get(k).getScore()), SwingConstants.CENTER);
             pname.setFont(f);
             scores.setFont(f);
-            //height is good here. placment at 3/4 of height with length of height/18.
-            //Maybe go back and make width so it lines up with first and last column of buttons? 
             scores.setBounds(x, screenHeight * 3 / 4, labelwIncrementor, screenHeight / 18);
             //height here same as above but position is below (this is why the h/18 * 1.3 is below)
             pname.setBounds(x, screenHeight * 3 / 4 + (int) (screenHeight / 18 * 1.3),
@@ -573,7 +558,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     	//changing player name and score bounds
     	int x = screenWidth / 8;
     	int labelwIncrementor = (int) ((8./9.) * screenWidth - x) / numPlayers;
-        //int labelwDivider = screenWidth / labelwIncrementor;
     	for (int k = 0; k < allScores.size(); k++) {
     		allScores.get(k).setBounds(x, screenHeight * 3 / 4, labelwIncrementor, screenHeight / 18);
     		allNames.get(k).setBounds(x, screenHeight * 3 / 4 + (int) (screenHeight / 18 * 1.3),
@@ -585,10 +569,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     	x = screenWidth / 8;
         int y = screenHeight / 4;
     	int widthIncrementor = (int) ((8./9.) * screenWidth - x) / numCategories;
-        //int widthDivider = (int) screenWidth / widthIncrementor;
         int heightIncrementor = (int) ((2./3.) * screenHeight - y) / nCQs; 
-        //int heightDivider = (int) screenHeight / heightIncrementor;
-        
         for (int k = 0; k < allButtons.length; k++) {
         	allCategories.get(k).setBounds(x, screenHeight / 6, widthIncrementor, 
         		screenHeight / 4 - screenHeight / 6);
@@ -608,8 +589,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * @param q An question object that is the question coresponding to a category/point value.
      */
     public void createQBoard(Question q) {
-        //this.createQButtons();
-    	
     	//creating qbuttons
         JButton[] qbuttons = new JButton[numPlayers];
         qboard = new JDialog();
@@ -617,7 +596,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         int x = (int) (screenWidth / 9.6);
         int y = screenHeight * 2 / 3;
         int qxIncrementor = (int) ((8./9.) * screenWidth - x) / numPlayers;
-        //int qxDivider = screenWidth / qxIncrementor;
         for (int k = 0; k < players.size(); k++) {
             JButton person = new JButton(players.get(k).getName());
             person.setBounds(x, y, qxIncrementor, screenHeight / 18);
@@ -625,7 +603,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             person.setVisible(false);
             qboard.add(person);
             qbuttons[k] = person;    
-            x += qxIncrementor;//(screenWidth / 11.5);
+            x += qxIncrementor;
         }
         allQButtons = qbuttons;
         
@@ -646,8 +624,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 
         //question
         question_text.setText(q.get_question());
-//        JLabel ques = new JLabel(q.get_question(), SwingConstants.CENTER);
-//        question_text = ques;
         question_text.setFont(a);
         question_text.setBounds(0, screenHeight / 4, screenWidth, screenHeight / 9);
         qboard.add(question_text);
@@ -682,7 +658,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * @param nheight The new Qboard height.
      */
     public void resizeQboard(int nwidth, int nheight) {
-    	//need varible for Q screen width/height???
     	qboard.setSize(nwidth, nheight);
     	int x = (int) (nwidth / 8);
         int y = nheight * 2 / 3;
@@ -690,9 +665,8 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     	for (int k = 0; k < players.size(); k++) {
             JButton person = new JButton(players.get(k).getName());
             allQButtons[k].setBounds(x, y, qxIncrementor, nheight / 18);
-            //allQButtons[k].setVisible(false);
             qboard.add(person);   
-            x += qxIncrementor;//(screenWidth / 11.5);
+            x += qxIncrementor;
         }
     	ans.setBounds(0, nheight / 2, nwidth, nheight / 9);
     	showAns.setBounds(nwidth / 2 - ((int) (nwidth / 5.76)) / 2, nheight / 2,
@@ -728,7 +702,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                         allButtons[k][j].setVisible(false);
                         val = Integer.parseInt(allButtons[k][j].getText());
                         this.createQBoard(categories.get(k).getQuestion(j));
-                        //val = categories.get(k).getQuestion(j).getValue();
                     }
                     return;
                 }

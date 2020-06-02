@@ -6,6 +6,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.Font;
 
+/**
+ * This is a Question class. 
+ * This class makes a question object that stores a question, answer, and point value.
+ * This class can also store the cateogry for the question. 
+ * @author timothysullivan
+ *
+ */
 public class Question {
     Question() {
     }
@@ -28,7 +35,12 @@ public class Question {
     /**
      * Label that shows the answer
      */
-
+    
+    /**
+     * Question constructor.
+     * @param q Question.
+     * @param a Answer.
+     */
     Question(String q, String a) {
         question = q;
         answer = a;
