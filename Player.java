@@ -52,6 +52,15 @@ public class Player {
     public void add(int num) {
         score += num;
     }
+    
+    @Override
+    public String toString() {
+    	String rtrn = "";
+    	rtrn += Integer.toString(getScore());
+    	rtrn += "\n";
+    	rtrn += getName();
+    	return rtrn;
+    }
     /**Player Ryan = new Player("Ryan", 0);
     Player Kyle = new Player("Kyle", 0);
     Player Chris = new Player("Chris", 0);

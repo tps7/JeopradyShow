@@ -7,6 +7,15 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.util.Scanner; // Import the Scanner class to read text files
 import java.util.ArrayList;
 import java.math.*;
 
@@ -23,17 +32,17 @@ import java.math.*;
  * Accomadate a diffrent number of questions per category. (DONE)
  * Accomadate diffrent point values per category.(DONE)
  * Include Daily Doubles. Weigh probablility towards begining.
- * Change some methods to private or maybe change some varibles to public or protected
+ * Change some methods to private or maybe change some varibles to public or protected.
  * Add a button and function that allows you to save the game and lode it later.
  * Adjust bounds for things like Title. When you don't have same length things are a bit off.
- * Comment all the other classes.
+ * Comment all the other classes. (DONE)
  * Decrease spacing between scoreboard and end of the buttons.
- * Change Colors to normal Jeoprady.
+ * Change Colors to normal Jeoprady. 
  * Make sizing better.
- * Add Audio text reader.
+ * Add Audio text reader. 
  * Option to create Jboard with given questions and values in a list of questions.
  * Create adjusted Scroreboard where winners are in certain order? or a scoreboard on side.
- * Make it so Double Jeoprady Button is disabled/does not appear until all buttons are clicked.ß
+ * Make it so Double Jeoprady Button is disabled/does not appear until all buttons are clicked.
  * 
  * @author timothysullivan
  *
@@ -86,13 +95,17 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      */
     private JButton[][] allButtons;
     /**
+     * Save Button
+     */
+    private JButton save = new JButton("Save");
+    /**
      * edit button
      */
-    private JButton edit = new JButton("edit");
+    private JButton edit = new JButton("Edit");
     /**
      * done button
      */
-    private JButton done = new JButton("done");
+    private JButton done = new JButton("Done");
     /**
      * submit button for change scores
      */
@@ -383,9 +396,15 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         title.setBounds(screenWidth / 2 - ((int) (screenWidth / 3.6)) / 2, screenHeight / 15,
                 (int) (screenWidth / 3.6), screenHeight / 18);
         add(title);
+        
+        //savebutton
+        Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
+        save.setBounds(screenWidth * 8/9, screenHeight/50, (int) (screenWidth / 12), screenHeight/24);
+        save.addActionListener(this);
+        add(save);
 
         //editbutton
-        Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
+        //Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
         edit.setBounds(screenWidth * 5 / 6, screenHeight / 10, (int) (screenWidth / 28.8), screenHeight / 30);
         edit.addActionListener(this);
         add(edit);
@@ -540,6 +559,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     	//changing button bounds
     	title.setBounds(screenWidth / 2 - ((int) (screenWidth / 3.6)) / 2, screenHeight / 15,
                 (int) (screenWidth / 3.6), screenHeight / 18);
+    	save.setBounds(screenWidth * 8/9, screenHeight/50, (int) (screenWidth / 12), screenHeight/24);
     	edit.setBounds(screenWidth * 5 / 6, screenHeight / 10, (int) (screenWidth / 28.8), screenHeight / 30);
     	done.setBounds(screenWidth * 5 / 6 + (int) (screenWidth / 19.2 * 1.3), screenHeight / 10,
                 (int) (screenWidth / 19.2), screenHeight / 30);
@@ -707,6 +727,79 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                 }
             }
         }
+        
+        //If save button is clicked
+        if (e.getSource() == save) {
+        	//creates new file
+        	try {
+        		  File myObj = new File("filename.txt");
+        	      if (myObj.createNewFile()) {
+        	        System.out.println("File created: " + myObj.getName());
+        	      } else {
+        	        System.out.println("File already exists.");
+        	      }
+        	    } catch (IOException ex) {
+        	      System.out.println("An error occurred.");
+        	      ex.printStackTrace();
+        	    }
+        	try {
+        	      FileWriter myWriter = new FileWriter("filename.txt");
+        	      BufferedWriter bw = new BufferedWriter(myWriter);
+        	      //adds button data to textfile
+        	      for (int k = 0; k < allButtons.length; k++) {
+        				for (int j = 0; j < allButtons[0].length; j++) {
+        					if (allButtons[k][j].isVisible() == false) {
+        						bw.write("0");
+        					} else {
+        						bw.write("1");
+        					}
+        				}
+        			}
+        	      bw.newLine();
+        	      //adds cateogory data (categorys questions answers point values) to text file
+        	      for (int k = 0; k < categories.size(); k++) {
+        	    	  bw.write(categories.get(k).getCname());
+        	    	  for (int j = 0; j < nCQs; j++) {
+        	    		  bw.newLine();
+        	    		  bw.write(categories.get(k).getQuestion(j).toString());
+        	    	  }
+        	    	  bw.newLine();
+        	    	  bw.write("\n");
+        	      }
+        	      //adds player data
+        	      for (int k = 0; k < players.size(); k++) {
+        	    	  bw.write(players.get(k).toString());
+        	    	  bw.newLine();
+        	    	  bw.write("\n");
+        	      }
+        	      bw.close();
+        	      System.out.println("Successfully wrote to the file.");
+        	    } catch (IOException ex) {
+        	      System.out.println("An error occurred.");
+        	      ex.printStackTrace();
+        	    }
+        	try {
+        	      File myObj = new File("filename.txt");
+        	      Scanner myReader = new Scanner(myObj);
+        	      while (myReader.hasNextLine()) {
+        	        String data = myReader.nextLine();
+        	        System.out.println(data);
+        	      }
+        	      myReader.close();
+        	    } catch (FileNotFoundException ex) {
+        	      System.out.println("An error occurred.");
+        	      ex.printStackTrace();
+        	    }
+        	//delete file
+//        	File myObj = new File("filename.txt"); 
+//        	if (myObj.delete()) { 
+//        	      System.out.println("Deleted the file: " + myObj.getName());
+//        	    } else {
+//        	      System.out.println("Failed to delete the file.");
+//        	    } 
+        	
+        	return;
+        }
 
         //If the edit button is clicked
         if (e.getSource() == edit) {
@@ -789,6 +882,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             if (e.getSource() == allQButtons[k]) {
                 players.get(k).add(val);
                 allScores.get(k).setText(Integer.toString(players.get(k).getScore()));
+                //add to text file gamedata "category, point value, Who got question right. 
                 qboard.dispose();
                 showAns.setVisible(true);
                 ans.setVisible(false);
@@ -916,5 +1010,35 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/////////////////////////************ Methods For Saving the Game ***********\\\\\\\\\\\\\\\\\\\\\
+	
+	/**
+	 * getButtonData: A helper function to get button data.
+	 * @return A string of 0's and 1's representing the buttons that are enabled and disabled, or
+	 * in other words which questions have been clicked on already.
+	 * 0 represents disabled 1 is enabled.
+	 */
+//	public String getButtonData() {
+//		String rtrn = "";
+//		for (int k = 0; k < allButtons.length; k++) {
+//			for (int j = 0; j < allButtons[0].length; j++) {
+//				if (allButtons[k][j].isVisible() == false) {
+//					rtrn += "0";
+//				} else {
+//					rtrn += "1";
+//				}
+//			}
+//		}
+//		return rtrn;
+//	}
+//	
+//	public String[] getCategories() {
+//		String[] rtrn = new String[categories.size()];
+//		for (int k = 0; k < categories.size(); k++) {
+//			rtrn[k] = categories.get(k).getCname();
+//		}
+//		return rtrn;
+//	}
     
 }

@@ -94,4 +94,16 @@ public class Question {
     public String getCategory() {
         return category;
     }
+        
+    @Override
+    public String toString() {
+    	String rtrn = "";
+    	rtrn += Integer.toString(value);
+    	rtrn += "\n";
+    	rtrn += get_question();
+    	rtrn += "\n";
+    	rtrn += getAnswer();
+    	return rtrn;
+    	
+    }
 }
