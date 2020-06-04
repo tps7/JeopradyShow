@@ -37,6 +37,9 @@ public class category {
     public String getCname() {
         return cname;
     }
+    public void setCname(String s) {
+    	cname = s;
+    }
     /**
      * addQuestion: Adds a question to the category arraylist. 
      * Auto sorts questions from lowest to highest point values.
@@ -78,4 +81,8 @@ public class category {
     		return questions.get(index);
     	}
     }
+    
+   public void setQuestion(Question q, int index) {
+	   questions.set(index, q);
+   }
 }

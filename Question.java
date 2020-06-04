@@ -99,10 +99,13 @@ public class Question {
     public String toString() {
     	String rtrn = "";
     	rtrn += Integer.toString(value);
-    	rtrn += "\n";
+    	//rtrn += "\n";
+    	rtrn += " ";
     	rtrn += get_question();
-    	rtrn += "\n";
+    	//rtrn += "\n";
+    	rtrn += " ";
     	rtrn += getAnswer();
+    	rtrn += " ";
     	return rtrn;
     	
     }

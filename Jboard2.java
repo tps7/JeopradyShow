@@ -99,6 +99,10 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      */
     private JButton save = new JButton("Save");
     /**
+     * Load Button
+     */
+    private JButton load = new JButton("Load");
+    /**
      * edit button
      */
     private JButton edit = new JButton("Edit");
@@ -402,6 +406,13 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         save.setBounds(screenWidth * 8/9, screenHeight/50, (int) (screenWidth / 12), screenHeight/24);
         save.addActionListener(this);
         add(save);
+        
+        //loadbutton
+        load.setBounds(screenWidth * 8/9, screenHeight/50 + screenHeight/22, 
+        		(int) (screenWidth / 12), screenHeight/24);
+        load.addActionListener(this);
+        add(load);
+        
 
         //editbutton
         //Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
@@ -560,6 +571,8 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     	title.setBounds(screenWidth / 2 - ((int) (screenWidth / 3.6)) / 2, screenHeight / 15,
                 (int) (screenWidth / 3.6), screenHeight / 18);
     	save.setBounds(screenWidth * 8/9, screenHeight/50, (int) (screenWidth / 12), screenHeight/24);
+    	load.setBounds(screenWidth * 8/9, screenHeight/50 + screenHeight/22, 
+        		(int) (screenWidth / 12), screenHeight/24);
     	edit.setBounds(screenWidth * 5 / 6, screenHeight / 10, (int) (screenWidth / 28.8), screenHeight / 30);
     	done.setBounds(screenWidth * 5 / 6 + (int) (screenWidth / 19.2 * 1.3), screenHeight / 10,
                 (int) (screenWidth / 19.2), screenHeight / 30);
@@ -756,21 +769,24 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         				}
         			}
         	      bw.newLine();
+        	      bw.write("Categories");
+        	      bw.newLine();
         	      //adds cateogory data (categorys questions answers point values) to text file
         	      for (int k = 0; k < categories.size(); k++) {
-        	    	  bw.write(categories.get(k).getCname());
+        	    	  bw.write(categories.get(k).getCname() + " ");
         	    	  for (int j = 0; j < nCQs; j++) {
-        	    		  bw.newLine();
-        	    		  bw.write(categories.get(k).getQuestion(j).toString());
+        	    		  //bw.newLine();
+        	    		  bw.write(categories.get(k).getQuestion(j).toString() + "");
         	    	  }
         	    	  bw.newLine();
-        	    	  bw.write("\n");
+        	    	  //bw.write("\n");
         	      }
+        	      bw.write("\n");
         	      //adds player data
         	      for (int k = 0; k < players.size(); k++) {
         	    	  bw.write(players.get(k).toString());
         	    	  bw.newLine();
-        	    	  bw.write("\n");
+        	    	  //bw.write("\n");
         	      }
         	      bw.close();
         	      System.out.println("Successfully wrote to the file.");
@@ -778,18 +794,18 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	      System.out.println("An error occurred.");
         	      ex.printStackTrace();
         	    }
-        	try {
-        	      File myObj = new File("filename.txt");
-        	      Scanner myReader = new Scanner(myObj);
-        	      while (myReader.hasNextLine()) {
-        	        String data = myReader.nextLine();
-        	        System.out.println(data);
-        	      }
-        	      myReader.close();
-        	    } catch (FileNotFoundException ex) {
-        	      System.out.println("An error occurred.");
-        	      ex.printStackTrace();
-        	    }
+//        	try {
+//        	      File myObj = new File("filename.txt");
+//        	      Scanner myReader = new Scanner(myObj);
+//        	      while (myReader.hasNextLine()) {
+//        	        String data = myReader.nextLine();
+//        	        System.out.println(data);
+//        	      }
+//        	      myReader.close();
+//        	    } catch (FileNotFoundException ex) {
+//        	      System.out.println("An error occurred.");
+//        	      ex.printStackTrace();
+//        	    }
         	//delete file
 //        	File myObj = new File("filename.txt"); 
 //        	if (myObj.delete()) { 
@@ -798,6 +814,51 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 //        	      System.out.println("Failed to delete the file.");
 //        	    } 
         	
+        	return;
+        }
+        
+        //If the load button is clicked
+        if (e.getSource() == load) {        	
+//			String fileName = (String) JOptionPane.showInputDialog(this, 
+//					"What is the name of the file you want to load?");
+//			System.out.println(fileName);
+//			fileName += ".txt";
+        	try {
+        		//File myObj = new File(fileName);
+        		File myObj = new File("filename2.txt");
+        		Scanner myReader = new Scanner(myObj);
+        		int line = 1;
+        		int i = 0;
+        		boolean makeCategories = false;;
+        		while (myReader.hasNextLine()) {
+        			String data = myReader.nextLine();
+        			//start with Buttons
+        			if (line == 1) {
+        				updateButtons(data);
+        			}
+        			//System.out.println(data);
+        			if (data.equals("Categories")) {
+        				makeCategories = true;
+        				//System.out.println("message");
+        				continue;
+        			}
+        			if (data.equals("555")) {
+        				makeCategories = false;
+        			}
+        			if (makeCategories == true) {
+        				//System.out.println(categories.get(0).getCname());
+        				updateCategories(data, i);
+        				i++;
+        			}
+
+        			line++;
+        			//System.out.println(line);
+        		}
+        		myReader.close();
+      	    } catch (FileNotFoundException ex) {
+      	      System.out.println("An error occurred.");
+      	      ex.printStackTrace();
+      	    }
         	return;
         }
 
@@ -1040,5 +1101,50 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 //		}
 //		return rtrn;
 //	}
-    
+	
+	public void updateButtons(String s) {
+		int index = 0;
+		for (int k = 0; k < allButtons.length; k++) {
+			for (int j = 0; j < allButtons[0].length; j++) {
+				if(s.charAt(index) == '0') {
+					allButtons[k][j].setVisible(false);
+				} else {
+					allButtons[k][j].setVisible(true);
+				}
+				index++;
+			}
+		}
+	}
+	public void updateCategories(String s, int i) {
+		String[] cInfo = s.split(" ");
+		System.out.println(s);
+		categories.get(i).setCname(cInfo[0]);
+//		int val = -1;
+//		String q = "";
+//		String a = "";
+		String add = "";
+		int three = 0;
+		int index = 0;
+		for (int k = 1; k < cInfo.length; k++) {
+			System.out.println(cInfo[k]);
+			if (three < 3) {
+				add += cInfo[k] + " ";
+			} else {
+				String[] ques = add.split(" ");
+				Question q = new Question(Integer.parseInt(ques[0]), ques[1], ques[2]);
+				categories.get(i).setQuestion(q, index);
+				index++;
+				three = 0;
+				//System.out.println(add);
+				add = "";
+				add += cInfo[k] + " ";
+				//need to update labels on board.
+			}
+			three++;
+		}
+		String[] ques = add.split(" ");
+		Question q = new Question(Integer.parseInt(ques[0]), ques[1], ques[2]);
+		categories.get(i).setQuestion(q, index);
+	}
+	
 }
