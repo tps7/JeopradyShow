@@ -57,7 +57,8 @@ public class Player {
     public String toString() {
     	String rtrn = "";
     	rtrn += Integer.toString(getScore());
-    	rtrn += "\n";
+    	//rtrn += "\n";
+    	rtrn += " ";
     	rtrn += getName();
     	return rtrn;
     }

@@ -33,7 +33,7 @@ import java.math.*;
  * Accomadate diffrent point values per category.(DONE)
  * Include Daily Doubles. Weigh probablility towards begining.
  * Change some methods to private or maybe change some varibles to public or protected.
- * Add a button and function that allows you to save the game and lode it later.
+ * Add a button and function that allows you to save the game and lode it later. (DONE)
  * Adjust bounds for things like Title. When you don't have same length things are a bit off.
  * Comment all the other classes. (DONE)
  * Decrease spacing between scoreboard and end of the buttons.
@@ -43,6 +43,8 @@ import java.math.*;
  * Option to create Jboard with given questions and values in a list of questions.
  * Create adjusted Scroreboard where winners are in certain order? or a scoreboard on side.
  * Make it so Double Jeoprady Button is disabled/does not appear until all buttons are clicked.
+ * Make a game log method that logs who got what question ect  a in text document while game is going on.
+ * Add somthing that distingeshes a doubleJ save/load.
  * 
  * @author timothysullivan
  *
@@ -88,6 +90,11 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * The point values for each question default is increments by 100.
      */
     protected int[] qvals = new int[] {};
+    /**
+     * Varible that stores the name of the file if it has been saved, or loaded
+     * Once already. Original value is blank because the file hasn't been saved yet.
+     */
+    private String n = "";
     //varibles for things on Jboard Like buttons and labels
     
     /**
@@ -97,11 +104,11 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     /**
      * Save Button
      */
-    private JButton save = new JButton("Save");
+    protected JButton save = new JButton("Save");
     /**
      * Load Button
      */
-    private JButton load = new JButton("Load");
+    protected JButton load = new JButton("Load");
     /**
      * edit button
      */
@@ -189,6 +196,10 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * the answer to the question
      */
     private JLabel ans = new JLabel("", SwingConstants.CENTER);
+    
+    //Varibles for double Jeoprady
+    
+    private ArrayList<category> dJboardCateogires;
     
     //End varible declaration begin code
     
@@ -485,7 +496,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
          */
         
         //Create labels for categories
-        for (int k = 0; k < categories.size(); k++) {
+        for (int k = 0; k < numCategories; k++) {
             JLabel subject = new JLabel(categories.get(k).getCname(), SwingConstants.CENTER);
             subject.setFont(new Font("TimesRoman", 0, screenHeight / 37));
             subject.setBounds(x, screenHeight / 6, (int) widthIncrementor, 
@@ -544,7 +555,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         int labelwIncrementor = (int) ((8./9.) * screenWidth - x) / numPlayers;
         Font f = new Font("TimesRoman", 0, screenHeight / 28);
         Border border2 = BorderFactory.createLineBorder(Color.BLACK, 1);
-        for (int k = 0; k < players.size(); k++) {
+        for (int k = 0; k < numPlayers; k++) {
             JLabel pname = new JLabel(players.get(k).getName(), SwingConstants.CENTER);
             JLabel scores = new JLabel(Integer.toString(players.get(k).getScore()), SwingConstants.CENTER);
             pname.setFont(f);
@@ -629,7 +640,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         int x = (int) (screenWidth / 9.6);
         int y = screenHeight * 2 / 3;
         int qxIncrementor = (int) ((8./9.) * screenWidth - x) / numPlayers;
-        for (int k = 0; k < players.size(); k++) {
+        for (int k = 0; k < numPlayers; k++) {
             JButton person = new JButton(players.get(k).getName());
             person.setBounds(x, y, qxIncrementor, screenHeight / 18);
             person.addActionListener(this);
@@ -744,8 +755,13 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         //If save button is clicked
         if (e.getSource() == save) {
         	//creates new file
+        	String fileName = (String) JOptionPane.showInputDialog(this, 
+					"What do you want to name the file you are about to save?", n);
+			//System.out.println(fileName);
+			n = fileName;
+			fileName += ".txt";
         	try {
-        		  File myObj = new File("filename.txt");
+        		  File myObj = new File(fileName);
         	      if (myObj.createNewFile()) {
         	        System.out.println("File created: " + myObj.getName());
         	      } else {
@@ -756,8 +772,14 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	      ex.printStackTrace();
         	    }
         	try {
-        	      FileWriter myWriter = new FileWriter("filename.txt");
+        	      FileWriter myWriter = new FileWriter(fileName);
         	      BufferedWriter bw = new BufferedWriter(myWriter);
+        	      bw.write("JBoard");
+        	      bw.newLine();
+        	      bw.write(numCategories + " " + numPlayers + " " + nCQs);
+        	      bw.newLine();
+        	      bw.write("Buttons");
+        	      bw.newLine();
         	      //adds button data to textfile
         	      for (int k = 0; k < allButtons.length; k++) {
         				for (int j = 0; j < allButtons[0].length; j++) {
@@ -781,7 +803,8 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	    	  bw.newLine();
         	    	  //bw.write("\n");
         	      }
-        	      bw.write("\n");
+        	      bw.write("Scoreboard");
+        	      bw.newLine();
         	      //adds player data
         	      for (int k = 0; k < players.size(); k++) {
         	    	  bw.write(players.get(k).toString());
@@ -819,35 +842,73 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         
         //If the load button is clicked
         if (e.getSource() == load) {        	
-//			String fileName = (String) JOptionPane.showInputDialog(this, 
-//					"What is the name of the file you want to load?");
-//			System.out.println(fileName);
-//			fileName += ".txt";
+			String fileName = (String) JOptionPane.showInputDialog(this, 
+					"What is the name of the file you want to load?");
+			//System.out.println(fileName);
+			n = fileName;
+			fileName += ".txt";
         	try {
-        		//File myObj = new File(fileName);
-        		File myObj = new File("filename2.txt");
+        		File myObj = new File(fileName);
+        		//File myObj = new File("filename2.txt");
         		Scanner myReader = new Scanner(myObj);
         		int line = 1;
         		int i = 0;
-        		boolean makeCategories = false;;
+        		boolean makeButtons = false;
+        		boolean makeCategories = false;
+        		boolean makeScoreBoard = false;
         		while (myReader.hasNextLine()) {
         			String data = myReader.nextLine();
         			//start with Buttons
         			if (line == 1) {
-        				updateButtons(data);
+        				//System.out.println(data);
+        				if (!(data.equals("JBoard"))) {
+        					System.out.println("error not a valid file to load");
+        					return;
+        				} else {
+        					line++;
+        				    continue;
+        				}
+        			}
+        			if (line == 2) {
+        				if (!(checkBoard(data))) {
+        					//System.out.println("Problem!!!!!!");
+        					this.getContentPane().removeAll();
+        					this.repaint();
+        					createboard();
+        					resizeBoard();
+        					return;
+        				} else {
+        					line++;
+        					continue;
+        				}
+        			}
+        			if (data.equals("Buttons")) {
+        				makeButtons = true;
+        				continue;
         			}
         			//System.out.println(data);
         			if (data.equals("Categories")) {
         				makeCategories = true;
+        				makeButtons = false;
         				//System.out.println("message");
         				continue;
         			}
-        			if (data.equals("555")) {
+        			if (data.equals("Scoreboard")) {
         				makeCategories = false;
+        				makeScoreBoard = true;
+        				i = 0;
+        				continue;
+        			}
+        			if (makeButtons == true) {
+        				updateButtons(data);
         			}
         			if (makeCategories == true) {
         				//System.out.println(categories.get(0).getCname());
         				updateCategories(data, i);
+        				i++;
+        			}
+        			if (makeScoreBoard == true) {
+        				updateScoreBoard(data, i);
         				i++;
         			}
 
@@ -903,7 +964,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
       //If double jeoprady button is pressed on main board.
         //This creates and opens a double jeoprady board.
         if (e.getSource() == doubleJ) {
-        	
         	String[] c = new String[] {"z", "y", "x", "v", "w", "u", "t"};
         	DoubleJboard2 d = new DoubleJboard2(players, c);
             d.getContentPane().setBackground(Color.WHITE);
@@ -1117,8 +1177,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 	}
 	public void updateCategories(String s, int i) {
 		String[] cInfo = s.split(" ");
-		System.out.println(s);
+		//System.out.println(s);
 		categories.get(i).setCname(cInfo[0]);
+		allCategories.get(i).setText(cInfo[0]);
 //		int val = -1;
 //		String q = "";
 //		String a = "";
@@ -1126,7 +1187,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 		int three = 0;
 		int index = 0;
 		for (int k = 1; k < cInfo.length; k++) {
-			System.out.println(cInfo[k]);
+			//System.out.println(cInfo[k]);
 			if (three < 3) {
 				add += cInfo[k] + " ";
 			} else {
@@ -1145,6 +1206,32 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 		String[] ques = add.split(" ");
 		Question q = new Question(Integer.parseInt(ques[0]), ques[1], ques[2]);
 		categories.get(i).setQuestion(q, index);
+	}
+	
+	public void updateScoreBoard(String s, int i) {
+		String[] cInfo = s.split(" ");
+		players.get(i).setScore(Integer.parseInt(cInfo[0]));
+		players.get(i).setName(cInfo[1]);
+		allScores.get(i).setText(cInfo[0]);
+		allNames.get(i).setText(cInfo[1]);
+		
+		
+	}
+	public boolean checkBoard(String s) {
+		String[] bInfo = s.split(" ");
+		if (numCategories != Integer.parseInt(bInfo[0]) ||
+				numPlayers != Integer.parseInt(bInfo[1]) ||
+				nCQs != Integer.parseInt(bInfo[2])) {
+			numCategories = Integer.parseInt(bInfo[0]);
+			numPlayers = Integer.parseInt(bInfo[1]);
+			nCQs = Integer.parseInt(bInfo[2]);
+			allScores.clear();
+			allNames.clear();
+			allCategories.clear();
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 }
