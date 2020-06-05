@@ -85,4 +85,8 @@ public class category {
    public void setQuestion(Question q, int index) {
 	   questions.set(index, q);
    }
+   
+   public void clearQuestions() {
+	   questions.clear();
+   }
 }

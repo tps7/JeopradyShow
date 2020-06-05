@@ -85,6 +85,9 @@ public class Question {
     public int getValue() {
         return value;
     }
+    public void setValue(int v) {
+    	value = v;
+    }
 
     /**
      * gets category
@@ -93,6 +96,10 @@ public class Question {
      */
     public String getCategory() {
         return category;
+    }
+    //may need to change
+    public void setCategory(String s) {
+    	category = s;
     }
         
     @Override

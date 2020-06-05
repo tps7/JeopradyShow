@@ -45,6 +45,8 @@ import java.math.*;
  * Make it so Double Jeoprady Button is disabled/does not appear until all buttons are clicked.
  * Make a game log method that logs who got what question ect  a in text document while game is going on.
  * Add somthing that distingeshes a doubleJ save/load.
+ * Make save/load include button point differentials.
+ * Need to add part that updates category labels and labels in categories.
  * 
  * @author timothysullivan
  *
@@ -405,6 +407,10 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * It also places all of these things on the board in the correct location realative to screen size.
      */
     public void createboard() {
+//    	allScores.clear();
+//		allNames.clear();
+//		allCategories.clear();
+		//allButtons[0][0].remove();
         //title
         title.setForeground(Color.BLACK);
         title.setFont(new Font("TimesRoman", 1, screenHeight / 25));
@@ -620,6 +626,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	for (int j = 0; j < allButtons[0].length; j++) {
         		allButtons[k][j].setBounds(x, y, widthIncrementor, heightIncrementor);
         		y += heightIncrementor;
+        		//System.out.println(Integer.toString(categories.get(k).getQuestion(j).getValue()));
+        		//works but need to change value in Categories.
+        		allButtons[k][j].setText(Integer.toString(qvals[j]));
         	}
         	y = screenHeight / 4;
         	x += widthIncrementor;
@@ -777,6 +786,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	      bw.write("JBoard");
         	      bw.newLine();
         	      bw.write(numCategories + " " + numPlayers + " " + nCQs);
+        	      for (int k = 0; k < qvals.length; k++) {
+        	    	  bw.write(" " + Integer.toString(qvals[k])); 
+        	      }
         	      bw.newLine();
         	      bw.write("Buttons");
         	      bw.newLine();
@@ -841,7 +853,8 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         }
         
         //If the load button is clicked
-        if (e.getSource() == load) {        	
+        if (e.getSource() == load) {    
+        	
 			String fileName = (String) JOptionPane.showInputDialog(this, 
 					"What is the name of the file you want to load?");
 			//System.out.println(fileName);
@@ -882,6 +895,13 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         					continue;
         				}
         			}
+//        			if (line == 3) {
+//        				if (!checkQVals(data)) {
+//        					System.out.println("Hello");
+//        				} else {
+//        					System.out.println("fine");
+//        				}
+//        			}
         			if (data.equals("Buttons")) {
         				makeButtons = true;
         				continue;
@@ -920,6 +940,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
       	      System.out.println("An error occurred.");
       	      ex.printStackTrace();
       	    }
+        	
         	return;
         }
 
@@ -1192,8 +1213,11 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 				add += cInfo[k] + " ";
 			} else {
 				String[] ques = add.split(" ");
-				Question q = new Question(Integer.parseInt(ques[0]), ques[1], ques[2]);
+				//System.out.println(qvals[index]);
+				Question q = new Question(qvals[index], ques[1], ques[2]);
+				q.setCategory(categories.get(i).getCname());
 				categories.get(i).setQuestion(q, index);
+				//categories.get(i).getQuestion(index).setValue(qvals[index]);
 				index++;
 				three = 0;
 				//System.out.println(add);
@@ -1203,8 +1227,15 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 			}
 			three++;
 		}
+		//loop updating button values
+		for (int k = 0; k < allButtons.length; k++) {
+			for (int j = 0; j < allButtons[0].length; j++) {
+				allButtons[k][j].setText(Integer.toString(qvals[j]));
+			}
+		}
 		String[] ques = add.split(" ");
-		Question q = new Question(Integer.parseInt(ques[0]), ques[1], ques[2]);
+		Question q = new Question(qvals[index], ques[1], ques[2]);
+		q.setCategory(categories.get(i).getCname());
 		categories.get(i).setQuestion(q, index);
 	}
 	
@@ -1214,11 +1245,10 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 		players.get(i).setName(cInfo[1]);
 		allScores.get(i).setText(cInfo[0]);
 		allNames.get(i).setText(cInfo[1]);
-		
-		
 	}
 	public boolean checkBoard(String s) {
 		String[] bInfo = s.split(" ");
+		boolean rtrn = true;
 		if (numCategories != Integer.parseInt(bInfo[0]) ||
 				numPlayers != Integer.parseInt(bInfo[1]) ||
 				nCQs != Integer.parseInt(bInfo[2])) {
@@ -1226,12 +1256,38 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 			numPlayers = Integer.parseInt(bInfo[1]);
 			nCQs = Integer.parseInt(bInfo[2]);
 			allScores.clear();
-			allNames.clear();
-			allCategories.clear();
-			return false;
-		} else {
-			return true;
+//			allNames.clear();
+//			allCategories.clear();
+			//write clear question method.
+			//categories.clearQuestions();
+			//fix this 
+			//May have problems with other varibles not updating to load game changes.
+//			for (int k = 0; k < numCategories; k++) {
+//				categories.get(k).clearQuestions();
+//			}
+//			createQuestions();
+			rtrn = false;
+		} 
+		//splice bInfo turn to int and set equaL???
+		for (int k = 0; k < qvals.length; k++) {
+			if (qvals[k] != Integer.parseInt(bInfo[k + 3])) {
+				qvals[k] = Integer.parseInt(bInfo[k + 3]);
+				//rtrn = false;
+			}
 		}
+		return rtrn;
+	}
+	
+	public boolean checkQVals(String s) {
+		boolean rtrn = true;
+		String[] qInfo = s.split(" ");
+		for (int k = 0; k < nCQs; k++) {
+			if (qvals[k] != Integer.parseInt(qInfo[k])) {
+				qvals[k] = Integer.parseInt(qInfo[k]);
+				rtrn = false;
+			}
+		}
+		return rtrn;
 	}
 	
 }
