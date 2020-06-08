@@ -763,12 +763,12 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         
         //If save button is clicked
         if (e.getSource() == save) {
-        	//creates new file
+        	//asks for name of new file.
         	String fileName = (String) JOptionPane.showInputDialog(this, 
 					"What do you want to name the file you are about to save?", n);
-			//System.out.println(fileName);
 			n = fileName;
 			fileName += ".txt";
+			//Makes new file if a file dosent already exists.
         	try {
         		  File myObj = new File(fileName);
         	      if (myObj.createNewFile()) {
@@ -780,16 +780,20 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	      System.out.println("An error occurred.");
         	      ex.printStackTrace();
         	    }
+        	//writes File
         	try {
         	      FileWriter myWriter = new FileWriter(fileName);
         	      BufferedWriter bw = new BufferedWriter(myWriter);
+        	      //Line to distinguish this text file as a Jboard save file.
         	      bw.write("JBoard");
         	      bw.newLine();
+        	      //Line that holds the genral board dimension data.
         	      bw.write(numCategories + " " + numPlayers + " " + nCQs);
         	      for (int k = 0; k < qvals.length; k++) {
         	    	  bw.write(" " + Integer.toString(qvals[k])); 
         	      }
         	      bw.newLine();
+        	      //Line that tells scanner we are going to button data.
         	      bw.write("Buttons");
         	      bw.newLine();
         	      //adds button data to textfile
@@ -803,25 +807,24 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         				}
         			}
         	      bw.newLine();
+        	      //line that tells scanner we are going to category data,
         	      bw.write("Categories");
         	      bw.newLine();
         	      //adds cateogory data (categorys questions answers point values) to text file
         	      for (int k = 0; k < categories.size(); k++) {
         	    	  bw.write(categories.get(k).getCname() + " ");
         	    	  for (int j = 0; j < nCQs; j++) {
-        	    		  //bw.newLine();
         	    		  bw.write(categories.get(k).getQuestion(j).toString() + "");
         	    	  }
         	    	  bw.newLine();
-        	    	  //bw.write("\n");
         	      }
+        	      //line that tells scanner we are going to scoreboard data.
         	      bw.write("Scoreboard");
         	      bw.newLine();
         	      //adds player data
         	      for (int k = 0; k < players.size(); k++) {
         	    	  bw.write(players.get(k).toString());
         	    	  bw.newLine();
-        	    	  //bw.write("\n");
         	      }
         	      bw.close();
         	      System.out.println("Successfully wrote to the file.");
@@ -829,51 +832,29 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	      System.out.println("An error occurred.");
         	      ex.printStackTrace();
         	    }
-//        	try {
-//        	      File myObj = new File("filename.txt");
-//        	      Scanner myReader = new Scanner(myObj);
-//        	      while (myReader.hasNextLine()) {
-//        	        String data = myReader.nextLine();
-//        	        System.out.println(data);
-//        	      }
-//        	      myReader.close();
-//        	    } catch (FileNotFoundException ex) {
-//        	      System.out.println("An error occurred.");
-//        	      ex.printStackTrace();
-//        	    }
-        	//delete file
-//        	File myObj = new File("filename.txt"); 
-//        	if (myObj.delete()) { 
-//        	      System.out.println("Deleted the file: " + myObj.getName());
-//        	    } else {
-//        	      System.out.println("Failed to delete the file.");
-//        	    } 
         	
         	return;
         }
         
         //If the load button is clicked
         if (e.getSource() == load) {    
-        	
 			String fileName = (String) JOptionPane.showInputDialog(this, 
 					"What is the name of the file you want to load?");
-			//System.out.println(fileName);
 			n = fileName;
 			fileName += ".txt";
         	try {
         		File myObj = new File(fileName);
-        		//File myObj = new File("filename2.txt");
         		Scanner myReader = new Scanner(myObj);
         		int line = 1;
         		int i = 0;
         		boolean makeButtons = false;
         		boolean makeCategories = false;
         		boolean makeScoreBoard = false;
+        		//Loop through the text file.
         		while (myReader.hasNextLine()) {
         			String data = myReader.nextLine();
-        			//start with Buttons
+        			//A line of text that makes sure this file is a Jboard save file.
         			if (line == 1) {
-        				//System.out.println(data);
         				if (!(data.equals("JBoard"))) {
         					System.out.println("error not a valid file to load");
         					return;
@@ -882,9 +863,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         				    continue;
         				}
         			}
+        			//checks board dimension data and updates if neeeded.
         			if (line == 2) {
         				if (!(checkBoard(data))) {
-        					//System.out.println("Problem!!!!!!");
         					this.getContentPane().removeAll();
         					this.repaint();
         					createboard();
@@ -895,22 +876,14 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         					continue;
         				}
         			}
-//        			if (line == 3) {
-//        				if (!checkQVals(data)) {
-//        					System.out.println("Hello");
-//        				} else {
-//        					System.out.println("fine");
-//        				}
-//        			}
+        			//3 if statments to check which, if any, part of the Jboard is being updated.
         			if (data.equals("Buttons")) {
         				makeButtons = true;
         				continue;
         			}
-        			//System.out.println(data);
         			if (data.equals("Categories")) {
         				makeCategories = true;
         				makeButtons = false;
-        				//System.out.println("message");
         				continue;
         			}
         			if (data.equals("Scoreboard")) {
@@ -919,28 +892,27 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         				i = 0;
         				continue;
         			}
+        			//updates buttons
         			if (makeButtons == true) {
         				updateButtons(data);
         			}
+        			//updates categories.
         			if (makeCategories == true) {
-        				//System.out.println(categories.get(0).getCname());
         				updateCategories(data, i);
         				i++;
         			}
+        			//updates scoreboard.
         			if (makeScoreBoard == true) {
         				updateScoreBoard(data, i);
         				i++;
         			}
-
         			line++;
-        			//System.out.println(line);
         		}
         		myReader.close();
       	    } catch (FileNotFoundException ex) {
       	      System.out.println("An error occurred.");
       	      ex.printStackTrace();
       	    }
-        	
         	return;
         }
 
@@ -1153,36 +1125,12 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 		
 	}
 	
-	/////////////////////////************ Methods For Saving the Game ***********\\\\\\\\\\\\\\\\\\\\\
-	
+	/////////////////********* Methods For Saving and Loading the Game *****\\\\\\\\\\\\\\\\\\
 	/**
-	 * getButtonData: A helper function to get button data.
-	 * @return A string of 0's and 1's representing the buttons that are enabled and disabled, or
-	 * in other words which questions have been clicked on already.
-	 * 0 represents disabled 1 is enabled.
+	 * updateButtons: Helper function that updates the visiblity of the buttons on the Jboard.
+	 * Called when the load game button is pressed.
+	 * @param s The String from the text file.
 	 */
-//	public String getButtonData() {
-//		String rtrn = "";
-//		for (int k = 0; k < allButtons.length; k++) {
-//			for (int j = 0; j < allButtons[0].length; j++) {
-//				if (allButtons[k][j].isVisible() == false) {
-//					rtrn += "0";
-//				} else {
-//					rtrn += "1";
-//				}
-//			}
-//		}
-//		return rtrn;
-//	}
-//	
-//	public String[] getCategories() {
-//		String[] rtrn = new String[categories.size()];
-//		for (int k = 0; k < categories.size(); k++) {
-//			rtrn[k] = categories.get(k).getCname();
-//		}
-//		return rtrn;
-//	}
-	
 	public void updateButtons(String s) {
 		int index = 0;
 		for (int k = 0; k < allButtons.length; k++) {
@@ -1192,10 +1140,17 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 				} else {
 					allButtons[k][j].setVisible(true);
 				}
+				allButtons[k][j].setText(Integer.toString(qvals[j]));
 				index++;
 			}
 		}
 	}
+	/**
+	 * updateCategories: Helper function that updates category names when
+	 * load game button pressed
+	 * @param s The string from the text file.
+	 * @param i The index of the cateogry being updated.
+	 */
 	public void updateCategories(String s, int i) {
 		String[] cInfo = s.split(" ");
 		//System.out.println(s);
@@ -1227,18 +1182,18 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 			}
 			three++;
 		}
-		//loop updating button values
-		for (int k = 0; k < allButtons.length; k++) {
-			for (int j = 0; j < allButtons[0].length; j++) {
-				allButtons[k][j].setText(Integer.toString(qvals[j]));
-			}
-		}
 		String[] ques = add.split(" ");
 		Question q = new Question(qvals[index], ques[1], ques[2]);
 		q.setCategory(categories.get(i).getCname());
 		categories.get(i).setQuestion(q, index);
 	}
 	
+	/**
+	 * updateScoreBoard: Helper function called in load game method that updates 
+	 * the scoreboard.
+	 * @param s The string from the text file.
+	 * @param i The index that we are updating.
+	 */
 	public void updateScoreBoard(String s, int i) {
 		String[] cInfo = s.split(" ");
 		players.get(i).setScore(Integer.parseInt(cInfo[0]));
@@ -1246,6 +1201,13 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 		allScores.get(i).setText(cInfo[0]);
 		allNames.get(i).setText(cInfo[1]);
 	}
+	
+	/**
+	 * checkBoard: Checks if board is a diffrent size than before.
+	 * If the board is a diffrent size it clears that dat for the scores names and categories.
+	 * @param s The string from the text file.
+	 * @return True if the board is the same. False if the board is diffrent.
+	 */
 	public boolean checkBoard(String s) {
 		String[] bInfo = s.split(" ");
 		boolean rtrn = true;
@@ -1256,28 +1218,25 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 			numPlayers = Integer.parseInt(bInfo[1]);
 			nCQs = Integer.parseInt(bInfo[2]);
 			allScores.clear();
-//			allNames.clear();
-//			allCategories.clear();
-			//write clear question method.
-			//categories.clearQuestions();
-			//fix this 
-			//May have problems with other varibles not updating to load game changes.
-//			for (int k = 0; k < numCategories; k++) {
-//				categories.get(k).clearQuestions();
-//			}
-//			createQuestions();
+			allNames.clear();
+			allCategories.clear();
 			rtrn = false;
 		} 
 		//splice bInfo turn to int and set equaL???
-		for (int k = 0; k < qvals.length; k++) {
-			if (qvals[k] != Integer.parseInt(bInfo[k + 3])) {
-				qvals[k] = Integer.parseInt(bInfo[k + 3]);
-				//rtrn = false;
-			}
+		int[] nqvals = new int[bInfo.length - 3];
+		for (int k = 0; k < bInfo.length - 3; k++) {
+			nqvals[k] = Integer.parseInt(bInfo[k + 3]);
 		}
+		qvals = null;
+		qvals = nqvals;
 		return rtrn;
 	}
 	
+	/**
+	 * checkQVals
+	 * @param s
+	 * @return
+	 */
 	public boolean checkQVals(String s) {
 		boolean rtrn = true;
 		String[] qInfo = s.split(" ");
