@@ -14,12 +14,10 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.FileNotFoundException;  // Import this class to handle errors
-import java.util.Scanner; // Import the Scanner class to read text files
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.ArrayList;
 import java.math.*;
-import java.time.*;
-import java.util.Date;
 
 /**
  * A class that makes the Jeoprady board.
@@ -45,10 +43,9 @@ import java.util.Date;
  * Option to create Jboard with given questions and values in a list of questions.
  * Create adjusted Scroreboard where winners are in certain order? or a scoreboard on side.
  * Make it so Double Jeoprady Button is disabled/does not appear until all buttons are clicked.
- * Make a game log method that logs who got what question ect  a in text document while game is going on.
+ * Make a game log method that logs who got what question ect in a text document while game is going on.
  * Add somthing that distingeshes a doubleJ save/load.
- * Make save/load include button point differentials.
- * Need to add part that updates category labels and labels in categories.
+ * Make save/load include button point differentials. (DONE).
  * 
  * @author timothysullivan
  *
@@ -89,6 +86,10 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * An interger stroing the number of questions per category. The default value is 5.
      */
     protected int nCQs;
+    /**
+     * A string that holds double JboardCategories.
+     */
+    protected String[] doubleJboardC;
     
     /**
      * The point values for each question default is increments by 100.
@@ -219,12 +220,14 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * with point values 100-500.
      * @param categories_names An array of strings. The strings are the names of the categories.
      * @param playerNames The names of the players.
+     * @param doubleJCategories the categories for double jeoprady.
      */
-    Jboard2(String[] categories_names,String[] playerNames) {
+    Jboard2(String[] categories_names,String[] playerNames, String[] doubleJCategories) {
     	setcategories(categories_names);
     	makePlayers(playerNames);
     	numCategories = categories.size();
     	numPlayers = players.size();
+    	doubleJboardC = doubleJCategories;
     	addWindowListener(this); 
     	addComponentListener(this);
     	nCQs = 5;
@@ -237,10 +240,11 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * @param playerNames
      * @param numCategoryQs The number of questions per category.
      */
-    Jboard2(String[] categories_names,String[] playerNames, int numCategoryQs) {
+    Jboard2(String[] categories_names,String[] playerNames, String[] doubleJCategories, int numCategoryQs) {
     	setcategories(categories_names);
     	makePlayers(playerNames);
     	numCategories = categories.size();
+    	doubleJboardC = doubleJCategories;
     	numPlayers = players.size();
     	addWindowListener(this); 
     	addComponentListener(this);
@@ -255,11 +259,13 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * @param numCategoryQs
      * @param questionValues The point value for each question row.
      */
-    Jboard2(String[] categories_names,String[] playerNames, int numCategoryQs, int[] questionValues) {
+    Jboard2(String[] categories_names,String[] playerNames, String[] doubleJCategories, 
+    		int numCategoryQs, int[] questionValues) {
     	setcategories(categories_names);
     	makePlayers(playerNames);
     	numCategories = categories.size();
     	numPlayers = players.size();
+    	doubleJboardC = doubleJCategories;
     	addWindowListener(this); 
     	addComponentListener(this);
     	nCQs = numCategoryQs;
@@ -978,8 +984,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
       //If double jeoprady button is pressed on main board.
         //This creates and opens a double jeoprady board.
         if (e.getSource() == doubleJ) {
-        	String[] c = new String[] {"z", "y", "x", "v", "w", "u", "t"};
-        	DoubleJboard2 d = new DoubleJboard2(players, c);
+        	DoubleJboard2 d = new DoubleJboard2(players, doubleJboardC);
             d.getContentPane().setBackground(Color.WHITE);
             d.setSize(d.getScreenWidth(), d.getScreenHeight());
             d.createboard();

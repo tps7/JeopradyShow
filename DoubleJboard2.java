@@ -58,6 +58,8 @@ public class DoubleJboard2 extends Jboard2 implements WindowListener  {
 			val += 150;
 		}
 		createQuestions();
+		load.setVisible(false);
+		save.setVisible(false);
 	}
 	
 	/**
