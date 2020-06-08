@@ -81,7 +81,11 @@ public class category {
     		return questions.get(index);
     	}
     }
-    
+   /**
+    * Sets question
+    * @param q Quesition about to be set.
+    * @param index Index where the quesion will be set.
+    */
    public void setQuestion(Question q, int index) {
 	   questions.set(index, q);
    }

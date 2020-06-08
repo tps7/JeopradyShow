@@ -19,8 +19,12 @@ public class main {
         // "m", "n", "o", "p", "q", "r", "s", "t"
         String[] cats = new String[] {"a", "b", "c", "d", "e", "f", "h", "i", "j", "l"};
         //String[] cats = new String[] {"a", "b", "c", "d"};
+//    	String[] cats = new String[] {"a", "b", "c", "d", "e", "f", "h", "i", "j", "l",
+//    			"m", "n", "o", "p", "q", "r", "s", "t"};
         String[] people = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
         //String[] people = new String[] {"1", "2", "3"};
+//    	String[] people = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
+//    			"14", "15", "16", "17"};
         int[] pointVals = new int[] {100, 200, 300, 400, 500, 600, 750};
         //int[] pointVals = new int[] {123, 155, 169, 307, 450};
         Jboard2 j2 = new Jboard2(cats, people, pointVals.length, pointVals);
