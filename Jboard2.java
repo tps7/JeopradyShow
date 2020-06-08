@@ -737,7 +737,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     private int val = 0;
     private int val1 = 0;
     private int val2 = 0;
-    private int loads = 0; 
     
     /**
      * actionPerformed: This method handels what happens when 
@@ -765,7 +764,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                 }
             }
         }
-        
         //If save button is clicked
         if (e.getSource() == save) {
         	//asks for name of new file.
@@ -791,28 +789,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	      BufferedWriter bw = new BufferedWriter(myWriter);
         	      //Line to distinguish this text file as a Jboard save file.
         	      bw.write("JBoard");
-//        	      bw.newLine();
-//        	      //Line that holds the genral board dimension data.
-//        	      bw.write(numCategories + " " + numPlayers + " " + nCQs);
-//        	      for (int k = 0; k < qvals.length; k++) {
-//        	    	  bw.write(" " + Integer.toString(qvals[k])); 
-//        	      }
         	      bw.newLine();
-        	      //Line that tells scanner we are going to button data.
-//        	      bw.write("Buttons");
-//        	      bw.newLine();
-//        	      //adds button data to textfile
-//        	      for (int k = 0; k < allButtons.length; k++) {
-//        				for (int j = 0; j < allButtons[0].length; j++) {
-//        					if (allButtons[k][j].isVisible() == false) {
-//        						bw.write("0");
-//        					} else {
-//        						bw.write("1");
-//        					}
-//        				}
-//        			}
-//        	      bw.newLine();
-        	      
         	      bw.write("Qvals");
         	      bw.newLine();
         	      for (int k = 0; k < qvals.length; k++) {
@@ -838,7 +815,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	    	  bw.write(players.get(k).toString());
         	    	  bw.newLine();
         	      }
-        	      //bw.newLine();
         	      bw.write("CheckBoard");
         	      bw.newLine();
         	      //Line that holds the genral board dimension data.
@@ -868,10 +844,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         }
         //If the load button is clicked
         if (e.getSource() == load) {
-//        	loads++;
-//        	System.out.println(loads);
-//        	long startTime = new Date().getTime();
-//        	System.out.println(startTime);
 			String fileName = (String) JOptionPane.showInputDialog(this, 
 					"What is the name of the file you want to load?");
 			n = fileName;
@@ -899,9 +871,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         				    continue;
         				}
         			}
-        			//checks board dimension data and updates if neeeded.
-        			
-        			//3 if statments to check which, if any, part of the Jboard is being updated.
+        			//5 if statments to check which, if any, part of the Jboard is being updated.
         			if (data.equals("Qvals")) {
         				uQvals = true;
         				continue;
@@ -930,42 +900,35 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         				cB = false;
         				continue;
         			}
+        			//if statments that update the board.
         			//updates qvals
         			if (uQvals) {
         				updateQvals(data);
+        			}
+        			//updates categories.
+        			if (makeCategories == true) {
+        				updateCategories(data);
+        				//i++;
+        			}
+        			//updates scoreboard.
+        			if (makeScoreBoard == true) {
+        				updateScoreBoard(data);
+        				//i++;
+        			}
+        			//updates board elements
+        			if (cB == true) {
+        				checkBoard(data);
+        				this.getContentPane().removeAll();
+    					this.repaint();
+    					createboard();
+    					resizeBoard();
         			}
         			//updates buttons
         			if (makeButtons == true) {
         				updateButtons(data);
         			}
-        			//updates categories.
-        			if (makeCategories == true) {
-        				updateCategories(data, i);
-        				i++;
-        			}
-        			//updates scoreboard.
-        			if (makeScoreBoard == true) {
-        				updateScoreBoard(data, i);
-        				i++;
-        			}
-        			//checks board
-        			if (cB == true) {
-        				if (!(checkBoard(data))) {
-        					this.getContentPane().removeAll();
-        					this.repaint();
-        					createboard();
-        					resizeBoard();
-        					line++;
-        					continue;
-        					//return;
-        				} else {
-        					line++;
-        					continue;
-        				}
-        			}
         			line++;
         		}
-        		
         		myReader.close();
       	    } catch (FileNotFoundException ex) {      	    	
       	      System.out.println("An error occurred.");
@@ -1191,6 +1154,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 	 */
 	public void updateButtons(String s) {
 		int index = 0;
+		//looping through buttons and adding them.
 		for (int k = 0; k < allButtons.length; k++) {
 			for (int j = 0; j < allButtons[0].length; j++) {
 				if(s.charAt(index) == '0') {
@@ -1209,35 +1173,30 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 	 * @param s The string from the text file.
 	 * @param i The index of the cateogry being updated.
 	 */
-	public void updateCategories(String s, int i) {
+	public void updateCategories(String s) {
 		String[] cInfo = s.split(" ");
-		//System.out.println(s);
-		//ArrayList<category> categories2
+		//adds category name.
 		category c = new category(cInfo[0]);
 		categories.add(c);
 		int i2 = categories.size() - 1;
-		//categories.get(i).setCname(cInfo[0]);
-		//allCategories.get(i).setText(cInfo[0]);
 		String add = "";
 		int three = 0;
 		int index = 0;
+		//adding question object to categories
 		for (int k = 1; k < cInfo.length; k++) {
-			//System.out.println(cInfo[k]);
+			//if statments make sure all the data for the question has been gathered before adding 
+			//question to category.
 			if (three < 3) {
 				add += cInfo[k] + " ";
 			} else {
 				String[] ques = add.split(" ");
-				//System.out.println(qvals.length);
 				Question q = new Question(qvals[index], ques[1], ques[2]);
 				q.setCategory(categories.get(i2).getCname());
 				categories.get(i2).addQuestion(q.getValue(), q.get_question(), q.getAnswer());
-				//categories.get(i).getQuestion(index).setValue(qvals[index]);
 				index++;
 				three = 0;
-				//System.out.println(add);
 				add = "";
 				add += cInfo[k] + " ";
-				//need to update labels on board.
 			}
 			three++;
 		}
@@ -1253,27 +1212,19 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 	 * @param s The string from the text file.
 	 * @param i The index that we are updating.
 	 */
-	public void updateScoreBoard(String s, int i) {
+	public void updateScoreBoard(String s) {
 		String[] cInfo = s.split(" ");
-		//System.out.println(s);
-		//System.out.println(cInfo.length);
 		Player p = new Player(cInfo[1], Integer.parseInt(cInfo[0]));
 		players.add(p);
-		//players.get(i).setScore(Integer.parseInt(cInfo[0]));
-		//players.get(i).setName(cInfo[1]);
-		//allScores.get(i).setText(cInfo[0]);
-		//allNames.get(i).setText(cInfo[1]);
 	}
 	
 	/**
 	 * checkBoard: Checks if board is a diffrent size than before.
-	 * If the board is a diffrent size it clears that dat for the scores names and categories.
+	 * If the board is a diffrent size it clears that data for the scores names and categories.
 	 * @param s The string from the text file.
-	 * @return True if the board is the same. False if the board is diffrent.
 	 */
-	public boolean checkBoard(String s) {
+	public void checkBoard(String s) {
 		String[] bInfo = s.split(" ");
-		boolean rtrn = true;
 		numCategories = Integer.parseInt(bInfo[0]);
 		numPlayers = Integer.parseInt(bInfo[1]);
 		nCQs = Integer.parseInt(bInfo[2]);
@@ -1282,51 +1233,12 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 		allCategories.clear();
 		doubleJ.removeActionListener(this);
 		save.removeActionListener(this);
-		load.removeActionListener(this);
-		rtrn = false;
-		
-//		if (numCategories != Integer.parseInt(bInfo[0]) ||
-//				numPlayers != Integer.parseInt(bInfo[1]) ||
-//				nCQs != Integer.parseInt(bInfo[2])) {
-//			numCategories = Integer.parseInt(bInfo[0]);
-//			numPlayers = Integer.parseInt(bInfo[1]);
-//			nCQs = Integer.parseInt(bInfo[2]);
-//			allScores.clear();
-//			allNames.clear();
-//			allCategories.clear();
-//			doubleJ.removeActionListener(this);
-//			save.removeActionListener(this);
-//			load.removeActionListener(this);
-//			rtrn = false;
-//		} 
-		
-		//fixes qvals regardless if neccicary or not faster run time than check and update.
-//		int[] nqvals = new int[bInfo.length - 3];
-//		for (int k = 0; k < bInfo.length - 3; k++) {
-//			nqvals[k] = Integer.parseInt(bInfo[k + 3]);
-//		}
-//		qvals = null;
-//		qvals = nqvals;
-		
-		return rtrn;
+		load.removeActionListener(this);		
 	}
-	
 	/**
-	 * checkQVals
-	 * @param s
-	 * @return
+	 * updateQvals: Helper function to update Qvals called when load game is pressed.
+	 * @param s String input from txt file.
 	 */
-	public boolean checkQVals(String s) {
-		boolean rtrn = true;
-		String[] qInfo = s.split(" ");
-		for (int k = 0; k < nCQs; k++) {
-			if (qvals[k] != Integer.parseInt(qInfo[k])) {
-				qvals[k] = Integer.parseInt(qInfo[k]);
-				rtrn = false;
-			}
-		}
-		return rtrn;
-	}
 	public void updateQvals(String s) {
 		String[] qInfo = s.split(" ");
 		int[] nqvals = new int[qInfo.length];
@@ -1338,3 +1250,4 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 	}
 	
 }
+
