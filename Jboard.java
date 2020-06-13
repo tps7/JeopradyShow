@@ -594,6 +594,9 @@ public class Jboard extends JFrame implements ActionListener {
                 categorys.get(k).addQuestion(j, "question", "answer");
             }
         }
+<<<<<<< HEAD
     }
 }
 
+=======
+>>>>>>> 747c4aafff9ee364b779edc59e4a43f3f19de9a6
