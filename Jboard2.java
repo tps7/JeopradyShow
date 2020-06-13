@@ -31,8 +31,8 @@ import java.math.*;
  * Adjust Font sizes so it changes more dynamically so you can always read font.
  * Accomadate a diffrent number of questions per category. (DONE)
  * Accomadate diffrent point values per category.(DONE)
- * Include Daily Doubles. Weigh probablility towards begining.
- * Change some methods to private or maybe change some varibles to public or protected.
+ * Include Daily Doubles. Weigh probablility towards begining. (Decided Against Daily Doubles)
+ * Change some methods to private or maybe change some varibles to public or protected. 
  * Add a button and function that allows you to save the game and lode it later. (DONE)
  * Adjust bounds for things like Title. When you don't have same length things are a bit off.
  * Comment all the other classes. (DONE)
@@ -43,7 +43,8 @@ import java.math.*;
  * Option to create Jboard with given questions and values in a list of questions.
  * Create adjusted Scroreboard where winners are in certain order? or a scoreboard on side.
  * Make it so Double Jeoprady Button is disabled/does not appear until all buttons are clicked.
- * Make a game log method that logs who got what question ect in a text document while game is going on.
+ * If above is done make it so you can enable double jeoprady button in edit section.
+ * Make a game log method that logs who got what question ect in a text document while game is going on. (DONE)
  * Add somthing that distingeshes a doubleJ save/load.
  * Make save/load include button point differentials. (DONE).
  * 
@@ -90,7 +91,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * A string that holds double JboardCategories.
      */
     protected String[] doubleJboardC;
-    
     /**
      * The point values for each question default is increments by 100.
      */
@@ -100,6 +100,27 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * Once already. Original value is blank because the file hasn't been saved yet.
      */
     private String n = "";
+    
+    protected static File gamelog = new File("gamelog.txt");
+    
+    protected static BufferedWriter write;
+    static {
+    	try {
+    		write = new BufferedWriter(new FileWriter(gamelog.getName()));
+    	}
+    	catch (IOException ex) {
+    		System.out.println("error");
+    	}
+    }
+//    try {
+//    	protected BufferedWriter write = new BufferedWriter(new FileWriter(gamelog.getName()));
+//    } 
+//    catch(IOException ex) {
+//    	System.out.println("error");
+//    }
+    //protected BufferedWriter write = new BufferedWriter(new FileWriter(gamelog.getName()));
+    
+    
     //varibles for things on Jboard Like buttons and labels
     
     /**
@@ -643,7 +664,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	x += widthIncrementor;
         }
     }
-    
     /**
      * createQBoard: This method creates and places all the parts of the question board (Qboard).
      * This board appears when you click a point button on the Jboard
@@ -704,8 +724,10 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         qboard.add(showAns);
 
         //go back button
-        goBack.setBounds((int) (screenWidth / 28.8), screenHeight / 18, (int) (screenWidth / 14.4), screenHeight / 18);
-        goBack.addActionListener(this);
+        JButton gB = new JButton("Go Back");
+        gB.setBounds((int) (screenWidth / 28.8), screenHeight / 18, (int) (screenWidth / 14.4), screenHeight / 18);
+        gB.addActionListener(this);
+        goBack = gB;
         qboard.add(goBack);
 
         qboard.getContentPane().setBackground(Color.WHITE);
@@ -743,6 +765,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     private int val = 0;
     private int val1 = 0;
     private int val2 = 0;
+    private int val3 = 0;
     
     /**
      * actionPerformed: This method handels what happens when 
@@ -764,12 +787,24 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                         allButtons[k][j].setVisible(false);
                         val = Integer.parseInt(allButtons[k][j].getText());
                         this.createQBoard(categories.get(k).getQuestion(j));
+                        
+                        //adding data to gamelog
+                        try {
+                            //BufferedWriter write = new BufferedWriter(new FileWriter(gamelog.getName()));
+                            write.write(categories.get(k).getCname() + ", " + categories.get(k).getQuestion(j).getValue());
+                            write.write(" Correct: ");
+                            //write.close();
+                        } catch(IOException ex) {
+                        	System.out.println("An error occurred.");
+                      	    ex.printStackTrace();
+                        }
                     }
                     //add breakpoint here to check varibles after code has run.
                     return;
                 }
             }
         }
+        
         //If save button is clicked
         if (e.getSource() == save) {
         	//asks for name of new file.
@@ -940,6 +975,18 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
       	      System.out.println("An error occurred.");
       	      ex.printStackTrace();
       	    }
+        	
+        	//Adding data to game log
+        	try {
+                //BufferedWriter write = new BufferedWriter(new FileWriter(gamelog.getName()));
+        		write.newLine();
+                write.write("Loaded a new game");
+                write.newLine();
+            } catch(IOException ex) {
+            	System.out.println("An error occurred.");
+          	    ex.printStackTrace();
+            }
+        	
         	return;
         }
 
@@ -993,6 +1040,17 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             //d.createbuttons();
             d.setLayout(null);
             d.setVisible(true);
+            
+            //Telling gamelog that the game has moved to double jeoprady
+            try {
+            	write.newLine();
+                write.write("Double Jeoprady");
+                write.newLine();
+            } catch(IOException ex) {
+            	System.out.println("An error occurred.");
+          	    ex.printStackTrace();
+            }
+
         	return;
         }
 
@@ -1014,6 +1072,21 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             ans.setVisible(false);
             //System.out.println();
             allButtons[val1][val2].setVisible(false);
+            
+            //adding to gamelog
+            try {
+                //BufferedWriter write = new BufferedWriter(new FileWriter(gamelog.getName()));
+//            	System.out.println(val3);
+//            	val3++;
+                write.write("Nobody");
+                write.flush();
+                write.newLine();
+                //write.close();
+            } catch(IOException ex) {
+            	System.out.println("An error occurred.");
+          	    ex.printStackTrace();
+            }
+            
             return;
         }
 
@@ -1026,6 +1099,19 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                 qboard.dispose();
                 showAns.setVisible(true);
                 ans.setVisible(false);
+                
+                //adding to gamelog
+                try {
+                    //BufferedWriter write = new BufferedWriter(new FileWriter(gamelog.getName()));
+                    write.write(players.get(k).getName() + " Point Total: " + players.get(k).getScore());
+                    write.newLine();
+                    //write.close();
+                } catch(IOException ex) {
+                	System.out.println("An error occurred.");
+              	    ex.printStackTrace();
+                }
+                
+                
                 return;
             }
         }   
@@ -1069,6 +1155,12 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
+		try {
+            write.close();
+        } catch(IOException ex) {
+        	System.out.println("An error occurred.");
+      	    ex.printStackTrace();
+        }
 		System.exit(0);
 	}
 
