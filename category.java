@@ -53,6 +53,14 @@ public class category {
 
     }
     /**
+     * addQuestions: Adds a question to the category arraylist.
+     * Autosorts questinos from lowest to highest point values
+     * @param q A question object
+     */
+    public void addQuestion(Question q) {
+    	questions.add(q);
+    }
+    /**
      * sortQ: Sorts the questions in order from lowest to highest.
      * This method is called in the addQuestion method.
      */

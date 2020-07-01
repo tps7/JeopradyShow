@@ -497,3 +497,67 @@ public class DoubleJboard extends JFrame implements ActionListener {
         }
     }
 }
+
+////Blaine
+//categories.get(0).addQuestion(150, "What number did Blaine wear while he played on the Jaguars", "11");
+//categories.get(0).addQuestion(300, "Where did Blaine Gabbert go to college", "University of Missouri");
+//categories.get(0).addQuestion(750, "Who picked Blaine in the NFL Draft? What spot was he picked at and what year was it?",
+//      "Jacksonville Jaguars 2011 round 1 pick ten ");
+//categories.get(0).addQuestion(450, "Blaine is 29 years old. When is his Birthday (include year)",
+//      "October 15 1989, Will also accept the answer that since Blaine is a god he predates the big bang");
+//categories.get(0).addQuestion(600, "What team is Blaine currently on", "Tampa Bay Buccaneers");
+//
+////Women
+//categories.get(1).addQuestion(150, "What part of the female reproductive system recieves the penis during intercourse?",
+//      "Vagina");
+//categories.get(1).addQuestion(300, "How long is a menstrual cycle",
+//      "28 days average will also accept 4-6 weeks or a month");
+//categories.get(1).addQuestion(450, "Name the female reproductive part that carries the eggs from the ovaries to the uterus",
+//      "fallopian tubes");
+//categories.get(1).addQuestion(600, "At birth how many eggs does a women have",
+//      "1 million eggs will also accept the answer of zero bc of transgenders");
+//categories.get(1).addQuestion(750, "What are the Bartholins's glands?",
+//      "glands next to the vaginal opening on each side and produce a fluid (mucus) secretion");
+//
+////SexActs
+//categories.get(2).addQuestion(150, "Define Bukkake",
+//      "Many guys cumming on a single girl");
+//categories.get(2).addQuestion(300, "Given the definition define the following sex act A daring sexual maneuver midcoitus, one person " +
+//              "bites the neck of the other, locks their arms and legs down and goes into a deathroll all while maintaining insertion",
+//      "Alligator fuckhouse");
+//categories.get(2).addQuestion(450, "What is munging?", "Diging up a fresh female corpse in a graveyard and having a gang" +
+//      "bang. once everybody is done  someone puts there mouth on the Vagina and another jumps onto the stomach shooting all the cum and maggots " +
+//      "into said persons mouth, this would make a great loser punishment will accept less specific answers");
+//categories.get(2).addQuestion(600, "Define the Sex act charizard",
+//      "while having sex with a girl with pubic hair light her pubes on fire as you ejaculate, afterwards while whe is flapping " +
+//              "her arms about wildly scream YOU DON't HAVE ENOUGH BADGES TO TRAIN ME! and run out of the room");
+//categories.get(2).addQuestion(750, "Define the sex act coyote.",
+//      "This occurs when you wake up in the room of a nasty wombat and you know you’ve got to give her the slip " +
+//              "however you realize that your arm is wrapped around around her. " +
+//              "There fore you must gnaw off your own arm to get out of the situation. Can be very painful.");
+//
+//
+////FFLC League History
+//categories.get(3).addQuestion(450, "Name all the League Champions in chronological order beginning in 2014 " +
+//              "(You will not lose points if you begin in 2013)",
+//      "Ryan Jack Kyle Joey Joey");
+//categories.get(3).addQuestion(750, "Last year we decided draft order via a spelling bee. Name 5 of the 8 categories from last years bee",
+//      "5 of any of these: Player Names, Hookups, Sex Acts, Timmy Words, Towns in US, Death, Alcohol, Diseases");
+//categories.get(3).addQuestion(150, "Who was the Number 1 overall pick last year in our league", "Le'veon bell");
+//categories.get(3).addQuestion(300, "Who was the one person who was kicked out of the League", "Brian Goldman");
+//categories.get(3).addQuestion(600, "What is the maximum amount of players somone in our League can own?",
+//      "20. 16 players 4 IR");
+//
+////Football
+//categories.get(4).addQuestion(450, "What year was the first Superbowl", "1967");
+//categories.get(4).addQuestion(600, "Who is the highest paid football player", "Lionel Messi $84 million salary");
+//categories.get(4).addQuestion(750, "No game in the NFL has ever had a score where a team only has one point (like a score of 20-1)" +
+//              "however it is possible for a NFL team to put up a single point. explain how an team would go about doing this",
+//      "One Point Safety, Team A scores a touchdown, but PAT is blocked. Team B runs touchdown back but fumbles into Team A endzone " +
+//              "Team A recovers said fumble in there own Endzone and is downed");
+//categories.get(4).addQuestion(300, "What QB set the NFL record for TD's in a single season? How TD's did he/she throw?",
+//      "Peyton Manning 55");
+//categories.get(4).addQuestion(150, "What two teams were in the 2019 Superbowl and who won?",
+//      "New England Patriots and Los Angeles Rams. Patriots won");
+//
+//

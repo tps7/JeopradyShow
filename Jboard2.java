@@ -26,9 +26,9 @@ import java.math.*;
  * 
  * TODO most of these are not need for function but are extra things to do if time.
  * Make Qboard so it dynamically resizes. (DONE)
- * Make Qboard appear on same screen as JBoard.
+ * Make Qboard appear on same screen as JBoard. (NOT GOING TO DO).
  * Allign player name and points with right and left end of button columns.
- * Adjust Font sizes so it changes more dynamically so you can always read font.
+ * Adjust Font sizes so it changes more dynamically so you can always read font. (not needed)
  * Accomadate a diffrent number of questions per category. (DONE)
  * Accomadate diffrent point values per category.(DONE)
  * Include Daily Doubles. Weigh probablility towards begining. (Decided Against Daily Doubles)
@@ -42,11 +42,15 @@ import java.math.*;
  * Add Audio text reader. 
  * Option to create Jboard with given questions and values in a list of questions.
  * Create adjusted Scroreboard where winners are in certain order? or a scoreboard on side.
- * Make it so Double Jeoprady Button is disabled/does not appear until all buttons are clicked.
- * If above is done make it so you can enable double jeoprady button in edit section.
+ * Make it so Double Jeoprady Button is disabled/does not appear until all buttons are clicked (DONE)
+ * If above is done make it so you can enable double jeoprady button in edit section. (DONE)
  * Make a game log method that logs who got what question ect in a text document while game is going on. (DONE)
  * Add somthing that distingeshes a doubleJ save/load.
- * Make save/load include button point differentials. (DONE).
+ * Make Constructor take Double J data and have save save doubleJ data. (WORKING)
+ * Make save/load include button point differentials. (DONE)
+ * Do somthing so questions and answers don't need html tags. (DONE)
+ * Eventually add title/home Page that Loads the JBoard.
+ * Add numbers to edit screen to make editing easier
  * 
  * @author timothysullivan
  *
@@ -112,14 +116,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     		System.out.println("error");
     	}
     }
-//    try {
-//    	protected BufferedWriter write = new BufferedWriter(new FileWriter(gamelog.getName()));
-//    } 
-//    catch(IOException ex) {
-//    	System.out.println("error");
-//    }
-    //protected BufferedWriter write = new BufferedWriter(new FileWriter(gamelog.getName()));
-    
     
     //varibles for things on Jboard Like buttons and labels
     
@@ -135,6 +131,33 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * Load Button
      */
     protected JButton load = new JButton("Load");
+    /**
+     * double jeoprady button
+     */
+    protected JButton doubleJ = new JButton("Double Jeoprady");
+    /**
+     * JLabel for the game title.
+     */
+    protected JLabel title = new JLabel("<html> FFLC 810 2020 Jeopardy </html>", SwingConstants.CENTER);
+    /**
+     * ArrayList that holds all the labels of the player names.
+     */
+    private ArrayList<JLabel> allNames = new ArrayList<JLabel>();
+    /**
+     * Arraylist that holds all the labels of the scores.
+     */
+    private ArrayList<JLabel> allScores = new ArrayList<JLabel>();
+    /**
+     * Arraylist that holds all the labels of the scores.
+     */
+    private ArrayList<JLabel> allCategories = new ArrayList<JLabel>();
+    /**
+     * Font for the titles of the games.
+     */
+    private Font titleFont = new Font("TimesRoman", 1, screenHeight/25);
+    
+    
+    //Edit board varibles
     /**
      * edit button
      */
@@ -152,17 +175,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      */
     private JButton submit1 = new JButton("Submit");
     /**
-     * double jeoprady button
-     */
-    protected JButton doubleJ = new JButton("Double Jeoprady");
-    /**
      * reEnable buttons input field
      */
     private JTextField buttonEdit = new JTextField("");
-    /**
-     * JLabel for the game title.
-     */
-    protected JLabel title = new JLabel("FFLC 89 2020 Jeopardy");
     /**
      * reEnable buttons input label
      */
@@ -174,23 +189,34 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     /**
      * label for change Scores text field
      */
-    private JLabel changeScoresText = new JLabel("Edit Scores");
+    private JLabel changeScoresText = new JLabel("Edit Scores:");
     /**
      * is the board being edited
      */
     private boolean isEdit = false;
     /**
-     * ArrayList that holds all the labels of the player names.
+     * Checkbox to see if Double Jeoprady button is enabled.
      */
-    private ArrayList<JLabel> allNames = new ArrayList<JLabel>();
+    protected JCheckBox DJ = new JCheckBox("Enable Double Jeoprady");
     /**
-     * Arraylist that holds all the labels of the scores.
+     * An Integer that keeps track of question buttons pressed. 
+     * Once all have been pressed enables Double J button.
      */
-    private ArrayList<JLabel> allScores = new ArrayList<JLabel>();
+    private int buttonCounter = 0;
+    
     /**
-     * Arraylist that holds all the labels of the scores.
+     * This Label is an explaination on how to use the editing system. It only appears when the edit
+     * button is clicked and disspeares when the done button is clicked.
      */
-    private ArrayList<JLabel> allCategories = new ArrayList<JLabel>();
+    private JLabel editExplaition = new JLabel("<html><p> For editing buttons enter the button you want to enable as a"
+    		+ "x y cordinate with the top left button being (0, 0). Enter each number sepearted by a space so to reEnable the "
+    		+ "top button enter \"0 0\" without the quotation marks. To enable all of the buttons type in all. </p>"
+    		+ "<p><br>For editing the players score enter the index of the player whose score you want to change followed "
+    		+ "by a space and then the players new total score. For example changing the third players score to 250 would be "
+    		+ "\"2 250\" The two is there because of zero based indexing. </p>"
+    		+ "<p><br>To enable the double jeoprady button early check the box. </p>"
+    		+ "<p><br>To finish editing hit done.</p><html>");
+    
 
     //Qboard vars
 
@@ -402,9 +428,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             System.out.println("bad inputs");
             return;
         }
-
         if (x < allButtons.length && y < allButtons[0].length) {
             allButtons[x][y].setVisible(true);
+            buttonCounter--;
         }
 
     }
@@ -442,10 +468,11 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 //		allCategories.clear();
 		//allButtons[0][0].remove();
         //title
+    	//Font titleFont = new Font("TimesRoman", 1, screenHeight/25);
         title.setForeground(Color.BLACK);
-        title.setFont(new Font("TimesRoman", 1, screenHeight / 25));
-        title.setBounds(screenWidth / 2 - ((int) (screenWidth / 3.6)) / 2, screenHeight / 15,
-                (int) (screenWidth / 3.6), screenHeight / 18);
+        title.setFont(titleFont);
+        title.setBounds(screenWidth / 2 - ((int) (screenWidth / 2.5)) / 2, screenHeight / 15,
+                (int) (screenWidth / 2.5), screenHeight / 18);
         add(title);
         
         //savebutton
@@ -468,7 +495,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         add(edit);
 
         //donebutton
-        done.setBounds(screenWidth * 5 / 6 + (int) (screenWidth / 19.2 * 1.3), screenHeight / 10,
+        done.setBounds(screenWidth * 5 / 6, screenHeight / 10 + (int) (1.05 * screenHeight/ 30),
                 (int) (screenWidth / 19.2), screenHeight / 30);
         done.addActionListener(this);
         done.setVisible(false);
@@ -510,10 +537,22 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         submit2.addActionListener(this);
         add(submit2);
         submit2.setVisible(false);
+        
+        //Edit explanation
+        editExplaition.setBounds(screenWidth * 7 / 8, screenHeight / 6, screenWidth / 9, screenHeight * 3 / 5);
+        add(editExplaition);
+        editExplaition.setVisible(false);
+        
+        //Double Jeoprady checkbox
+        DJ.setBounds((int) (screenWidth / 7.2), screenHeight / 10, screenWidth / 7, screenHeight/ 15);
+        add(DJ);
+        DJ.setSelected(doubleJ.isEnabled());
+        DJ.setVisible(false);
 
         //Double Jeoprody button
         doubleJ.setBounds((int) (screenWidth / 7.2), screenHeight / 15, (int) (screenWidth / 9.6), screenHeight / 18);
         doubleJ.addActionListener(this);
+        //doubleJ.setEnabled(false);
         add(doubleJ);
         
         //varibles needed for below
@@ -534,6 +573,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         //Create labels for categories
         for (int k = 0; k < numCategories; k++) {
             JLabel subject = new JLabel(categories.get(k).getCname(), SwingConstants.CENTER);
+            subject.setText("<html><center>" + categories.get(k).getCname() + "</center></html>");
             subject.setFont(new Font("TimesRoman", 0, screenHeight / 37));
             subject.setBounds(x, screenHeight / 6, (int) widthIncrementor, 
             		screenHeight / 4 - screenHeight / 6);
@@ -615,13 +655,19 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      */
     public void resizeBoard() {
     	//changing button bounds
-    	title.setBounds(screenWidth / 2 - ((int) (screenWidth / 3.6)) / 2, screenHeight / 15,
-                (int) (screenWidth / 3.6), screenHeight / 18);
+    	title.setBounds(screenWidth / 2 - ((int) (screenWidth / 2.5)) / 2, screenHeight / 15,
+                (int) (screenWidth / 2.5), screenHeight / 18);
+    	//Not perfect but better still get ... on small sizes. Need to be able to read input text length
+    	title.getText();
+    	titleFont = titleFont.deriveFont(1, (title.getHeight() / 6 + title.getWidth() / 18));
+    	//title.setBorder(BorderFactory.createLineBorder(Color.black));
+    	//System.out.println(titleFont.getSize());
+    	title.setFont(titleFont);
     	save.setBounds(screenWidth * 8/9, screenHeight/50, (int) (screenWidth / 12), screenHeight/24);
     	load.setBounds(screenWidth * 8/9, screenHeight/50 + screenHeight/22, 
         		(int) (screenWidth / 12), screenHeight/24);
     	edit.setBounds(screenWidth * 5 / 6, screenHeight / 10, (int) (screenWidth / 28.8), screenHeight / 30);
-    	done.setBounds(screenWidth * 5 / 6 + (int) (screenWidth / 19.2 * 1.3), screenHeight / 10,
+    	done.setBounds(screenWidth * 5 / 6, screenHeight / 10 + (int) (1.05 * screenHeight/ 30),
                 (int) (screenWidth / 19.2), screenHeight / 30);
     	buttonEdit.setBounds(screenWidth / 30, screenHeight / 4, (int) (screenWidth / 14.4), screenHeight / 30);
     	editBtext.setBounds(screenWidth / 30, screenHeight / 4 - screenHeight / 30 * 3 / 2,
@@ -633,6 +679,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     	        (int) (screenWidth / 14.4), screenHeight / 30);
     	submit2.setBounds(screenWidth / 30, screenHeight / 2 + screenHeight / 30 * 3 / 2,
     	        (int) (screenWidth / 14.4), screenHeight / 30);
+    	DJ.setBounds((int) (screenWidth / 7.2), screenHeight / 10, screenWidth / 7, screenHeight/ 15);
     	doubleJ.setBounds((int) (screenWidth / 7.2), screenHeight / 15, (int) (screenWidth / 9.6), screenHeight / 18);
     	
     	//changing player name and score bounds
@@ -695,25 +742,25 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         qboard.setSize(screenWidth, screenHeight);
 
         //title
-        qInfo.setText(q.getCategory() + " " + Integer.toString(q.getValue()));
+        qInfo.setText("<html>" + q.getCategory() + " " + Integer.toString(q.getValue()) + "</html>");
         JLabel title = new JLabel(q.getCategory() + " " + Integer.toString(q.getValue()), SwingConstants.CENTER);
         qInfo = title;
         qInfo.setFont(f);
-        qInfo.setBounds(screenWidth / 2 - ((int) (screenWidth / 5.76)) / 2, screenHeight / 9,
-                ((int) (screenWidth / 5.76)), screenHeight / 9);
+        qInfo.setBounds(screenWidth / 2 - ((int) (screenWidth / 2.5)) / 2, screenHeight / 9,
+                ((int) (screenWidth / 2.5)), screenHeight / 9);
         qInfo.setVisible(true);
         qboard.add(title);
 
         //question
-        question_text.setText(q.get_question());
+        question_text.setText("<html>" + q.get_question() + "</html>");
         question_text.setFont(a);
-        question_text.setBounds(0, screenHeight / 4, screenWidth, screenHeight / 9);
+        question_text.setBounds(screenWidth / 8, screenHeight / 4, (screenWidth * 6) / 8, screenHeight / 9);
         qboard.add(question_text);
 
         //answer
         ans.setFont(a);
-        ans.setText(q.getAnswer());
-        ans.setBounds(0, screenHeight / 2, screenWidth, screenHeight / 9);
+        ans.setText("<html>" + q.getAnswer() + "</html>");
+        ans.setBounds(screenWidth / 8, screenHeight / 2, (screenWidth * 6) / 8, screenHeight / 9);
         qboard.add(ans);
         ans.setVisible(false);
 
@@ -757,8 +804,8 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                 (int) (nwidth / 5.76), nheight / 18);
     	goBack.setBounds((int) (nwidth / 28.8), nheight / 18, (int) (nwidth / 14.4), nheight / 18);
     	question_text.setBounds(0, nheight / 4, nwidth, nheight / 9);
-    	qInfo.setBounds(nwidth / 2 - ((int) (nwidth / 5.76)) / 2, nheight / 9,
-                ((int) (nwidth / 5.76)), nheight / 9);
+    	qInfo.setBounds(nwidth / 2 - ((int) (nwidth / 2.5)) / 2, nheight / 9,
+                ((int) (nwidth / 2.5)), nheight / 9);
     }
     
     //private varibles for the purpose of storing values below.
@@ -787,7 +834,10 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
                         allButtons[k][j].setVisible(false);
                         val = Integer.parseInt(allButtons[k][j].getText());
                         this.createQBoard(categories.get(k).getQuestion(j));
-                        
+                        buttonCounter++;
+                        if (buttonCounter >= allButtons.length * allButtons[0].length) {
+                        	doubleJ.setEnabled(true);
+                        }
                         //adding data to gamelog
                         try {
                             //BufferedWriter write = new BufferedWriter(new FileWriter(gamelog.getName()));
@@ -811,6 +861,10 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	String fileName = (String) JOptionPane.showInputDialog(this, 
 					"What do you want to name the file you are about to save?", n);
 			n = fileName;
+			//handels if cancel button is clicked of file is closed.
+			if (n == null) {
+				return;
+			}
 			fileName += ".txt";
 			//Makes new file if a file dosent already exists.
         	try {
@@ -831,8 +885,10 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	      //Line to distinguish this text file as a Jboard save file.
         	      bw.write("JBoard");
         	      bw.newLine();
+        	      //Tells scanner going to Qvals
         	      bw.write("Qvals");
         	      bw.newLine();
+        	      //Writes Qvals to save file
         	      for (int k = 0; k < qvals.length; k++) {
         	    	  bw.write(Integer.toString(qvals[k]) + " "); 
         	      }
@@ -843,8 +899,12 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	      //adds cateogory data (categorys questions answers point values) to text file
         	      for (int k = 0; k < categories.size(); k++) {
         	    	  bw.write(categories.get(k).getCname() + " ");
+        	    	  bw.newLine();
         	    	  for (int j = 0; j < nCQs; j++) {
-        	    		  bw.write(categories.get(k).getQuestion(j).toString() + "");
+        	    		 bw.write(categories.get(k).getQuestion(j).toString() + "");
+        	    		  //bw.write(categories.get(k).getQuestion(j).getValue());
+        	    		  bw.newLine();
+        	    		  //bw.write(categories.get(k).getQuestion(q).get)
         	    	  }
         	    	  bw.newLine();
         	      }
@@ -883,16 +943,22 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         	
         	return;
         }
+        
         //If the load button is clicked
         if (e.getSource() == load) {
 			String fileName = (String) JOptionPane.showInputDialog(this, 
 					"What is the name of the file you want to load?");
 			n = fileName;
+			//handels if cancel button is pressed or dialuge is closed
+			if (n == null) {
+				return;
+			}
 			fileName += ".txt";
         	try {
         		File myObj = new File(fileName);
         		Scanner myReader = new Scanner(myObj);
         		int line = 1;
+        		Question q = new Question();
         		int i = 0;
         		boolean makeButtons = false;
         		boolean makeCategories = false;
@@ -938,6 +1004,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         			}
         			if (data.equals("Buttons")) {
         				makeButtons = true;
+        				buttonCounter = 0;
         				cB = false;
         				continue;
         			}
@@ -948,8 +1015,31 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         			}
         			//updates categories.
         			if (makeCategories == true) {
-        				updateCategories(data);
-        				//i++;
+        				if (data.isEmpty()) {
+        					i = 0;
+        					continue;
+        				}
+        				if (i ==  0) {
+        					category c = new category(data);
+        					categories.add(c);
+        					q.setCategory(data);
+        				} else {
+        					//data is point value
+        					if (i % 3 == 1) {
+        						q.setValue(Integer.parseInt(data));
+        					}
+        					//data is the question
+        					else if (i % 3 == 2) {
+        						q.setQuestion(data);
+        					}
+        					//data is the answer
+        					else if (i % 3 == 0) {
+        						q.setAnswer(data);
+        						Question newQ = new Question(q);
+        						categories.get(categories.size() - 1).addQuestion(newQ);
+        					}
+        				}
+        				i++;
         			}
         			//updates scoreboard.
         			if (makeScoreBoard == true) {
@@ -971,7 +1061,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         			line++;
         		}
         		myReader.close();
-      	    } catch (FileNotFoundException ex) {      	    	
+      	    } catch (FileNotFoundException ex) {     	    	
       	      System.out.println("An error occurred.");
       	      ex.printStackTrace();
       	    }
@@ -986,7 +1076,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             	System.out.println("An error occurred.");
           	    ex.printStackTrace();
             }
-        	
         	return;
         }
 
@@ -1000,6 +1089,8 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             submit2.setVisible(true);
             changeScoresText.setVisible(true);
             changeScores.setVisible(true);
+            DJ.setVisible(true);
+            editExplaition.setVisible(true);
             return;
         }
 
@@ -1013,6 +1104,9 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
             submit2.setVisible(false);
             changeScoresText.setVisible(false);
             changeScores.setVisible(false);
+            DJ.setVisible(false);
+            doubleJ.setEnabled(DJ.isSelected());
+            editExplaition.setVisible(false);
             return;
         }
 
@@ -1031,12 +1125,13 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
       //If double jeoprady button is pressed on main board.
         //This creates and opens a double jeoprady board.
         if (e.getSource() == doubleJ) {
-        	DoubleJboard2 d = new DoubleJboard2(players, doubleJboardC);
+        	int[] DJpointvals = new int[] {150, 300, 450, 600, 750};
+        	DoubleJboard2 d = new DoubleJboard2(players, doubleJboardC, DJpointvals.length, DJpointvals);
             d.getContentPane().setBackground(Color.WHITE);
             d.setSize(d.getScreenWidth(), d.getScreenHeight());
             d.createboard();
             //d.createScoreboard();
-            d.createQuestions();
+            //d.createQuestions();
             //d.createbuttons();
             d.setLayout(null);
             d.setVisible(true);
@@ -1121,15 +1216,144 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * createQuestions: This is the method where all the questions are made.
      */
     public void createQuestions() {
-        for (int k = 0; k < categories.size(); k++) {
-            for (int j = 1; j < nCQs + 1; j++) {
-            	if (qvals.length == nCQs) {
-            		categories.get(k).addQuestion(qvals[j - 1], "question", "answer");
-            	} else {
-            		categories.get(k).addQuestion(j * 100, "question", "answer");
-            	}
-            }
-        }
+//        for (int k = 0; k < categories.size(); k++) {
+//            for (int j = 1; j < nCQs + 1; j++) {
+//            	if (qvals.length == nCQs) {
+//            		categories.get(k).addQuestion(qvals[j - 1], "question", "answer");
+//            	} else {
+//            		categories.get(k).addQuestion(j * 100, "question", "answer");
+//            	}
+//            }        
+//        }
+    	//Ryan
+        categories.get(0).addQuestion(100, "What is Ryan’s most quotable movie?",
+                "Caddyshack");
+        categories.get(0).addQuestion(200, "Name the First and last name of one of Ryan’s two middle school "
+        		+ "text girlfriends", "Brinn Anderson (2 months) or Julia Rosenberg (1 week)");
+        categories.get(0).addQuestion(300, "Name Ryan’s Pet peeve ", "When people take Ryan's food without asking");
+        categories.get(0).addQuestion(400, ": Who is Ryan’s Favorite actor who had a role in the office. "
+        		+ "You must say the actors real name to get points. ", "James Spader (Robert California)");
+        categories.get(0).addQuestion(500, "Name of Ryan’s attractive middle aged suburban softball mom boss from last summer internship",
+        		"Kelly Mutuc");
+        categories.get(0).addQuestion(750, "What was the last thing that made Ryan shed a tear?", 
+        		"Episode 7 of the last dance when Michael Jordan talked about intensity/winning");
+
+        //Kyle
+        categories.get(1).addQuestion(100, "How many girlfriends has Kyle had in his life?",
+                "0 (the best possible answer)");
+        categories.get(1).addQuestion(200, "What is the name of the girl that Kyle had his first kiss with?", "Jenna");
+        categories.get(1).addQuestion(300, "How tall was Kyle when he started high school?",
+                "5 feet 2 inches");
+        categories.get(1).addQuestion(400, "Kyle got all a’s every quarter in 6th grade. What quarter did he get all a’s for the fifth and final time in middle school?",
+                "8th grade 2nd quarter");
+        categories.get(1).addQuestion(500, "In a summer baseball league before junior year, Kyle had a very high batting average. What was it? ",
+        		".475 (count anything between .450 and .500)");
+        categories.get(1).addQuestion(750, "When Kyle was in mustang 10 and he won the World Series, he hit a triple. What was unique about said triple?",
+        		"Bases were loaded, pitcher was a lefty, the player in right field was a girl");
+
+        //Chris
+        categories.get(2).addQuestion(100, "What is Jeff’s favorite nickname for Chris? (Gotta say it like he does)", 
+        		"MMMMMMMarijuana Masloski");
+        categories.get(2).addQuestion(200, "What is Chris's new favorite activity? (Not including smoking) ",
+                "Reading ");
+        categories.get(2).addQuestion(300, "When did Chris brake his wrist and how? ", "fall junior year playing hockey ");
+        categories.get(2).addQuestion(400, "Who has Chris seen in concert more than once?", 
+        		"Travis Scott");
+        categories.get(2).addQuestion(500, "How many songs does Chris know on the piano?", "25");
+        categories.get(2).addQuestion(750, "What were the things that Chris lost when Chris blacked out on New Year’s Eve in Madrid? Name all 6",
+        		": Phone, debt card and cash/money, glenview park district gym card, jacket and belt.");
+
+
+        //Joey
+        categories.get(3).addQuestion(100, "Spell Joey's last name",
+                "Masloski");
+
+        categories.get(3).addQuestion(200, "What’s Joey's shoe size", "13 or 14");
+
+        categories.get(3).addQuestion(300, "Joey's first round pick last year was...",
+                "Deandre Hopkins");
+
+        categories.get(3).addQuestion(400, "name one thing in Joey's tiktok bio", "19, tiktok tv show, certified weirdo, dm me on insta I’ll reply");
+
+        categories.get(3).addQuestion(500, "when was the last time Joey said something in the fflc?(+-2 days, 400 pts) what did Joey say?(100 pts)",
+                "May 30th, Idc");
+        categories.get(3).addQuestion(750, "Who is Joey's Favorite Pornstar", "Jessa Rhodes");
+
+
+        //Lefteri
+        categories.get(4).addQuestion(100, "At what movie did Lefty first declare his independence from the Margwa?",
+        		"Captian America Civil War");
+        categories.get(4).addQuestion(200, "What is Lefty’s least favorite activity? ", "Running");
+        categories.get(4).addQuestion(300, "How many tickets has Lefteri gotton", "one");
+        categories.get(4).addQuestion(400, "What non-beer drink is Lefty’s drink of choice? ", "Vodka Tonic");
+        categories.get(4).addQuestion(500, "How many girls has Lefty broken up with over text? ","2");
+        categories.get(4).addQuestion(750, "What is Leftys neuroscience specilization? ", "Behavioral");
+        
+        //Kosta
+        categories.get(5).addQuestion(100, "Who does Kosta live with in Columbus? ", "Lefty and Kyle (will accept if someone says cousin)");
+        categories.get(5).addQuestion(200, "What is Kosta’s middle initial? ", "L");
+        categories.get(5).addQuestion(300, "What section of the ACT did Kosta do the worst in? ","Reading");
+        categories.get(5).addQuestion(400, "Who is Kosta’s favorite female singer?", "Halsey");
+        categories.get(5).addQuestion(500, "Which Ohio State football player did Kosta have a weird encounter "
+        		+ "with (Kosta was looking at him, he started looking at Kosta like “what the fuck are you looking at man”)? ", "Justin Fields");
+        categories.get(5).addQuestion(750, "What did Kosta tell Becky Cloud 2 summers ago while she was still dating Jacob Newman? ", 
+        		"Soccer has a goalie but you can still score (I will accept anything along the lines of that)");
+
+
+        //Jack S
+        categories.get(6).addQuestion(100, "Who Jack’s best friend at school?", "Dan");
+        categories.get(6).addQuestion(200, "Who is the hottest girl Jack has gotten with?", "Julia Kelly");
+        categories.get(6).addQuestion(300, "Who is Jacks favorite baseball player","Jose Abreu");
+        categories.get(6).addQuestion(400, "In what neighborhood of Pittsburgh is the university of Pittsburg mainly located ", 
+        		"Oakland");
+        categories.get(6).addQuestion(500, "What is the maximum number of times Jack has masturbated in a day", "Six");
+        categories.get(6).addQuestion(750, "What is the last name of the girl Jack was having sex with for a few months this fall ", 
+        		"Allmandinger, pronounced all men ding her");
+
+        //Timmy
+        categories.get(7).addQuestion(100, "Timmy is currently the champion of this League. Name one starter/startable player that was on his "
+        		+ "fantasy team at the end of the year?", "Will accpet any of the following: Russel Wilson Derick Henry Aaron Jones"
+        				+ "Davante Adams, Odell Beckham Jr Darren Waller Josh Gordan, Damien Williams, Robby Anderson, Ronald Jones Raheem Moorstead");
+        categories.get(7).addQuestion(200, "What is Timmy’s Major?", "Engineering Mechanics");
+        categories.get(7).addQuestion(300, "What is Timmy’s Favorite Video game?", "Witcher 3 Wild Hunt (Will accept Witcher 3)");
+        categories.get(7).addQuestion(400, "On what day and year did Timmy first get drunk? Year can be given in actual year or your year in school at the time."
+        		, "July 4th 2017 Summer before my senior year of High School");
+        categories.get(7).addQuestion(500, "How many programming languages does Timmy know? Name at least half. "
+        		+ "If you get the exact number wrong, but you are able to name all/most of the languages correctly you will still get points", 
+        		"5 total Java, Python, C++, Javascript, MATLAB (If you name Java Python C++ and Javascript you get points)");
+        categories.get(7).addQuestion(750, "Timmy is in a fraternity, who is Timmy’s pledge dad? You need to include first and last name to get points. "
+        		+ "If you only know first name I will give you points if you provide enough personal details, or/and give an accurate physical description.", 
+        		"Ryan Shiffer, Timmy is the judge if descriptions work or not but things Timmy was looking for was major (Industrial Enginnering)"
+        		+ " 5 foot 9ish black hair with a full beard");
+        
+        //Jeff
+        categories.get(8).addQuestion(100, "Jeff’s ex gf name", "Noa");
+        categories.get(8).addQuestion(200, "Jeff’s first kiss", "Falyn Mellul");
+        categories.get(8).addQuestion(300, "What is Jeff’s favorite beer","Michelob Ultra");
+        categories.get(8).addQuestion(400, "In the 2016 FFLC draft who did Jeff pick that turned out to be a bust", "Todd Gurely");
+        categories.get(8).addQuestion(500, "What 3 past and present NFL players did Jeff interview last year at bears Gala", 
+        		"Urlacher, Trubisky, Allen Robinson");
+        categories.get(8).addQuestion(750, "what is Jeff’s go to drink at the bar", "Vodka soda");
+
+        //Jared
+        categories.get(9).addQuestion(100, "Redemption time- Name both of my brothers.", "Zach and Ryan");
+        categories.get(9).addQuestion(200, "Where did I lose my virginity?", "Paris");
+        categories.get(9).addQuestion(300, "What is my favorite beer?","Left Hand Nitro Milk Stout");
+        categories.get(9).addQuestion(400, "What is responsible for the worst night of my life?", 
+        		"Four Loko (I passed out and puked on my pillow while my roommate had a girl over)");
+        categories.get(9).addQuestion(500, "Why did I lose my phone at Lolla 2017?", 
+        		"I got super crossed, phone got taken out of my pocket and I didn’t even notice.");
+        categories.get(9).addQuestion(750, "If I could have any superpower, what would it be?", "Shapeshifting (It’s basically a bunch of different powers at once)");
+
+
+        //Jack W
+        categories.get(10).addQuestion(100, "What bone did Whetstone fracture this year?", "Tibia");
+        categories.get(10).addQuestion(200, "What is Whetstone’s middle name?", "Leo");
+        categories.get(10).addQuestion(300, "What was Whetstone supposed to be doing for Deloitte this summer",
+        		"2 acceptable answers: Risk and Financial Advisory or Assurance and Internal Audit");
+        categories.get(10).addQuestion(400, "What place did Whetstone get at cross country nationals in 2019?", "14");
+        categories.get(10).addQuestion(500, "What is Whetstone’s all time favorite beer company?", "Leinenkugels");
+        categories.get(10).addQuestion(750, "What fine arts class did Whetstone take at GBS?", "Ceramics");
     }
     /**
 	 * percentDiffrence: Helper function to caculate the percent diffrence between two numbers.
@@ -1256,6 +1480,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 			for (int j = 0; j < allButtons[0].length; j++) {
 				if(s.charAt(index) == '0') {
 					allButtons[k][j].setVisible(false);
+					buttonCounter++;
 				} else {
 					allButtons[k][j].setVisible(true);
 				}
@@ -1270,37 +1495,57 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 	 * @param s The string from the text file.
 	 * @param i The index of the cateogry being updated.
 	 */
-	public void updateCategories(String s) {
-		String[] cInfo = s.split(" ");
-		//adds category name.
-		category c = new category(cInfo[0]);
-		categories.add(c);
-		int i2 = categories.size() - 1;
-		String add = "";
-		int three = 0;
-		int index = 0;
-		//adding question object to categories
-		for (int k = 1; k < cInfo.length; k++) {
-			//if statments make sure all the data for the question has been gathered before adding 
-			//question to category.
-			if (three < 3) {
-				add += cInfo[k] + " ";
-			} else {
-				String[] ques = add.split(" ");
-				Question q = new Question(qvals[index], ques[1], ques[2]);
-				q.setCategory(categories.get(i2).getCname());
-				categories.get(i2).addQuestion(q.getValue(), q.get_question(), q.getAnswer());
-				index++;
-				three = 0;
-				add = "";
-				add += cInfo[k] + " ";
-			}
-			three++;
+	public void updateCategories(String s, int i) {
+		System.out.println(s);
+		System.out.println(i);
+		//Data in line is Cname
+		if (i == 0) {
+			category c = new category(s);
+			categories.add(c);
 		}
-		String[] ques = add.split(" ");
-		Question q = new Question(qvals[index], ques[1], ques[2]);
-		q.setCategory(categories.get(i2).getCname());
-		categories.get(i2).addQuestion(q.getValue(), q.get_question(), q.getAnswer());
+		//Data is question pointValue
+		else if (i % 3 == 1) {
+			
+		}
+		//Data is the Question
+		else if (i % 3 == 2) {
+			
+		}
+		//Data is Answer
+		else if (i % 3 == 0) {
+			
+		}
+//		String[] cInfo = s.split(" ");
+//		//adds category name.
+//		category c = new category(cInfo[0]);
+//		categories.add(c);
+//		int i2 = categories.size() - 1;
+//		String add = "";
+//		int three = 0;
+//		int index = 0;
+//		//adding question object to categories
+//		for (int k = 1; k < cInfo.length; k++) {
+//			//if statments make sure all the data for the question has been gathered before adding 
+//			//question to category.
+//			
+//			if (three < 3) {
+//				add += cInfo[k] + " ";
+//			} else {
+//				String[] ques = add.split(" ");
+//				Question q = new Question(qvals[index], ques[1], ques[2]);
+//				q.setCategory(categories.get(i2).getCname());
+//				categories.get(i2).addQuestion(q.getValue(), q.get_question(), q.getAnswer());
+//				index++;
+//				three = 0;
+//				add = "";
+//				add += cInfo[k] + " ";
+//			}
+//			three++;
+//		}
+//		String[] ques = add.split(" ");
+//		Question q = new Question(qvals[index], ques[1], ques[2]);
+//		q.setCategory(categories.get(i2).getCname());
+//		categories.get(i2).addQuestion(q.getValue(), q.get_question(), q.getAnswer());
 	}
 	
 	/**

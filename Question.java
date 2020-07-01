@@ -32,10 +32,8 @@ public class Question {
      * point value of the question
      */
     private int value = 0;
-    /**
-     * Label that shows the answer
-     */
     
+    private int maxLineLength = 100;
     /**
      * Question constructor.
      * @param q Question.
@@ -44,12 +42,18 @@ public class Question {
     Question(String q, String a) {
         question = q;
         answer = a;
+//        if (q.charAt(q.length() - 1) != '?') {
+//        	question += '?';
+//        }
     }
 
     Question(int v, String q, String a) {
         value = v;
         question = q;
         answer = a;
+//        if (q.charAt(q.length() - 1) != '?') {
+//        	question += '?';
+//        }
     }
 
     Question(String c, int v, String q, String a) {
@@ -57,6 +61,17 @@ public class Question {
         question = q;
         answer = a;
         value = v;
+        //makes question always end in ?
+//        if (q.charAt(q.length() - 1) != '?') {
+//        	question += '?';
+//        }
+    }
+    
+    public Question(Question q) {
+    	this.value = q.value;
+    	this.question = q.question;
+    	this.answer = q.answer;
+    	this.category = q.category;
     }
 
     /**
@@ -67,6 +82,9 @@ public class Question {
     public String get_question() {
         return question;
     }
+    public void setQuestion(String s) {
+    	question = s;
+    }
 
     /**
      * gets answer
@@ -75,6 +93,9 @@ public class Question {
      */
     public String getAnswer() {
         return answer;
+    }
+    public void setAnswer(String s) {
+    	answer = s;
     }
 
     /**
@@ -106,14 +127,18 @@ public class Question {
     public String toString() {
     	String rtrn = "";
     	rtrn += Integer.toString(value);
-    	//rtrn += "\n";
-    	rtrn += " ";
+    	rtrn += "\n";
+    	//rtrn += " ";
     	rtrn += get_question();
-    	//rtrn += "\n";
-    	rtrn += " ";
+    	rtrn += "\n";
+    	//rtrn += " ";
     	rtrn += getAnswer();
-    	rtrn += " ";
+    	//rtrn += " ";
     	return rtrn;
     	
     }
+    
+//    public void formatText() {
+//    	
+//    }
 }
