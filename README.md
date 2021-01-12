@@ -35,7 +35,7 @@ This should have all the category and question point value in bold at the top in
 If you click the show answer button the answer to the question will appear. 
 <p align="center"><img src = "Jeoprady%20Pictures/Show%20answer%20button%20pressed.png" width= 50% height = 25%></p>
 The default answer to all questions is "answer". Below the answer buttons corresponding to each player name should appear. Clicking on a button will award points to whichevers player's button is pressed. If nobody gets the question right you can still click on the Go Back button and nobody will get points. Lets pretend player 5 got the question right. 
-<p align="center"><img src = "Jeoprady%20Pictures/5%20has%20%points.png" width= 75% height = 50%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/5%20has%20points.png" width= 75% height = 50%></p>
 
 
 By clicking on player 5 you now come back to the game board. Player 5 will now have 100 points. If player 5 gets more questions right the value from those questions will then add to player 5's total score. 
