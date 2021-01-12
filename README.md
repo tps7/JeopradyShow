@@ -22,23 +22,32 @@ The process is almost exactly the same for changing point values and player name
 <p align="center"><img src = "Jeoprady%20Pictures/Player%20name:num%20vals%20run.png" width= 75% height = 50%></p>
 
 Note the number of categories, player's, and questions per category is equal to the number of elements in each of their respective arrays
-Now going to back to the orginal board lets say you want to answer a question. Lets say you choose the question from category a for 100 points.
-
 
 **Clicking on Questions**
 
-Once you click up on the button a popup should appear. This should have all the category and question point value in bold at the top in this case the category is a and the point value is 100. Below this you should have the question itself. In the default game all of the questions are set to be "question". At this point their is two buttons you can press, Go Back, and Show Answer. If you press Go Back the question is removed from the game board, and no points are awareded. 
+Now going to back to the orginal board lets say you want to answer a question. Lets say you choose the question from category a for 100 points.
+<p align="center"><img src = "Jeoprady%20Pictures/Choosing%20Category.png" width= 75% height = 50%></p>
+Once you click up on the button a popup should appear.
+<p align="center"><img src = "Jeoprady%20Pictures/Cateogorys%20changed.png" width= 50% height = 25%></p>
+This should have all the category and question point value in bold at the top in this case the category is a and the point value is 100. Below this you should have the question itself. In the default game all of the questions are set to be "question". At this point their is two buttons you can press, Go Back, and Show Answer. If you press Go Back the question is removed from the game board, and no points are awareded.
+<p align="center"><img src = "Jeoprady%20Pictures/Go%20Back%20Button%20pressed.png" width= 75% height = 50%></p>
 
-If you click the show answer button the answer to the question will appear. The default answer to all questions is "answer". Below the answer buttons corresponding to each player name should appear. Clicking on a button will award points to whichevers player's button is pressed. If nobody gets the question right you can still click on the Go Back button and nobody will get points. Lets pretend player 5 got the question right. 
+If you click the show answer button the answer to the question will appear. 
+<p align="center"><img src = "Jeoprady%20Pictures/Show%20answer%20button%20pressed.png" width= 50% height = 25%></p>
+The default answer to all questions is "answer". Below the answer buttons corresponding to each player name should appear. Clicking on a button will award points to whichevers player's button is pressed. If nobody gets the question right you can still click on the Go Back button and nobody will get points. Lets pretend player 5 got the question right. 
+<p align="center"><img src = "Jeoprady%20Pictures/5%20has%20%points.png" width= 75% height = 50%></p>
 
 
-By clicking on player 5 you now come back to the game board. Player 5 will now have 100 points. If player 5 gets more quesstions right the value from those questions will then add to player 5's total score. 
+By clicking on player 5 you now come back to the game board. Player 5 will now have 100 points. If player 5 gets more questions right the value from those questions will then add to player 5's total score. 
+<p align="center"><img src = "Jeoprady%20Pictures/5%20has%20more%20points.png" width= 75% height = 50%></p>
 
 This process applies to other players as well.
+<p align="center"><img src = "Jeoprady%20Pictures/Board%20with%20lots%20of%20questions%20answered.png" width= 75% height = 50%></p>
 
 **Editing the game board during the game**
 
 Lets say the game host makes a mistake, like for example clicking on the wrong question or giving the wrong player points for a question. This where the edit button in the upper right corner comes in handy. When you press on the edit button you get a modfied version of the board.
+<p align="center"><img src = "Jeoprady%20Pictures/Edit%20Screen.png" width= 75% height = 50%></p>
 
 Their are a couple options for editing. You can Enable buttons using the edit buttons line. You can change scores using the edit scores line. Explanations for how edit the board appear on the right side of the screen. Below are two examples of enabling the button b 100, and ediing the score of player 7 so that player 6 has 7000 points. 
 
