@@ -110,15 +110,16 @@ Using this formating some could make a game from a .txt file, bypassing the need
 
 Once you finish answering all the questions the double jeoprady button that is normally disabled at the top of the screen will become enabled. 
 <p align="center"><img src = "Jeoprady%20Pictures/Double%20Jeoprady%20Board.png" width= 75% height = 50%></p>
-
+The double jeoprady button can also be enabled before all the questions are answered. This can be done by going to the edit screen and checking the box next to enable double jeoprady.
 By clickng on the Double Jeoprady Button you will get a new game board with new questions and categories. Player names and scores will carry over from the old game. 
-
-
+<p align="center"><img src = "Jeoprady%20Pictures/djboard1.png" width= 75% height = 50%></p>
 Note the categories, quetions per category, and points per question can be different than the original game. Other than that the game functions the same as the original game board
+<p align="center"><img src = "Jeoprady%20Pictures/djboard2.png" width= 75% height = 50%></p>
 
 
 **Miscilanious Features**
 
-The while playing the game what happens will be written to a file called gamelog.txt. The game log documents what happens in the game i.e. what question was picked who got that question correct (if anybody), and the players point total after they got a question correct. The game log also shows if double jeoprady was started or if a new game was loaded. The game log is written over every time you run main.java again, so if you want to save a gamelog save it to a different file than gamelog.txt. The gamelog does not show game edits, so if you edit a players score it will not show in the game log.
+The while playing the game what happens will be written to a file called gamelog.txt. The game log documents what happens in the game i.e. what question was picked who got that question correct (if anybody), and the players point total after they got a question correct. The game log also shows if double jeoprady was started or if a new game was loaded. The game log is written over every time you run main.java again, so if you want to save a gamelog save it to a different file than gamelog.txt. The gamelog does not show game edits, so if you edit a players score it will not show in the game log. Below is an example of what a gamelog output would look like:
+<p align="center"><img src = "Jeoprady%20Pictures/example_gamelog.png" width= 75% height = 50%></p>
 
 All of the parts of the game resize if the size of the game window changes, larger if the window size increases, smaller if the window size decreases. If you make the window to small you may not be able to read some parts of the game.
