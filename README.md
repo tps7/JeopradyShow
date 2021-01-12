@@ -61,13 +61,15 @@ While in the edit function screen all of the question buttons are disabled, so y
 
 Like with editing categories and player's edting the questions and answers must be done in the code. If you go to the Jboard2.java file and scroll down to the createQuestions function you should see the loop that is currently being used to set all of the questions with their default values.
 
-To manually set the questions you need to get the cateigory from the category array list and call the addQuestion function. The categories are listed in the list by zero based indexing in the order they are inputed from the main file. For example to get category a from the default game board you would do categories.get(0). To get cateogory c you would do categories.get(2). To make a question in a category you would type the following code categories.get(index of category).addQuestion(question point value, question, answer). For example if you wanted to set the 500 point question for category i to "What is the ninth letter in the alphebet?" you would type the following categories.get(8).addQuestion(500, "What is the ninth letter in the alphebet?", "I"); Below is the version in code.
-
+To manually set the questions you need to get the cateigory from the category array list and call the addQuestion function. 
+<p align="center"><img src = "Jeoprady%20Pictures/Default%20create%20questions%20function.png" width= 50% height = 25%></p>
+The categories are listed in the list by zero based indexing in the order they are inputed from the main file. For example to get category a from the default game board you would do categories.get(0). To get cateogory c you would do categories.get(2). To make a question in a category you would type the following code categories.get(index of category).addQuestion(question point value, question, answer). For example if you wanted to set the 500 point question for category i to "What is the ninth letter in the alphebet?" you would type the following categories.get(8).addQuestion(500, "What is the ninth letter in the alphebet?", "I"); Below is the version in code.
+<p align="center"><img src = "Jeoprady%20Pictures/Adding%20a%20question.png" width= 50% height = 25%></p>
 Note: the question was added before the loop. If you add the question after the loop it will not overwrite the question already present. To change a question after its already added use the set question function. Also ideally when playing the game you will not have the loop function to set the default values of the questions, instead you would have a question for each point value for every category in the game. If all the categories in the game are not full of questions the game will crash. 
 Changing the question in the code changes the question on the game board. Using the example from above:
-
-
-
+<p align="center"><img src = "Jeoprady%20Pictures/Added%20question%201.png" width= 75% height = 50%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/Added%20question%202.png" width= 75% height = 50%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/Added%20Question%203.png" width= 75% height = 50%></p>
 As you can see the question and answer changed from the default for the question i 500. 
 
 **Save and Load**
