@@ -7,6 +7,7 @@ Jeoprady can be downloaded from this github, and should be able to run immediatl
 To intially start the project run the main.java class. For refrence the project using eclipse IDE. If you run main.java immeditly after downloading the project you should see the following screen.
 
 **Editing Players, Category, and Question Points**
+
 Right now, in the default game all of the players have the names of numbers (1-11), and all the categories have a one letter name. Since the game has already started in order to change the players and cateogries you would have to exit the game. Unfortinatly to edit things like player names, number of players, category names, number of categories, number of questions per category, and question point value, you need to go into the code and manually change the values. 
 To change the category names, player names, and question point values you need to go into the main.java file and edit the lists cats,and people. You could also make your own lists, but make sure to change the code where your cats and people appear. For example changing a category 
 
