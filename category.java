@@ -53,6 +53,25 @@ public class category {
 
     }
     /**
+     * addQuestion: Adds a question to the category arraylist. 
+     * Auto sorts questions from lowest to highest point values.
+     * @param val The point value of the question.
+     * @param question The question itself.
+     * @param answer The answer to the question.
+     */
+    public void setQuestion(int val, String question, String answer) {
+    	Question q = new Question(val, question, answer);
+    	for (int k = 0; k < questions.size(); k++) {
+    		if (questions.get(k).getValue() == val) {
+    			questions.set(k, q);
+    			this.sortQ();
+    			return;
+    		}
+    	}
+    	questions.add(new Question(this.getCname(), val, question, answer));
+        this.sortQ();
+    }
+    /**
      * addQuestions: Adds a question to the category arraylist.
      * Autosorts questinos from lowest to highest point values
      * @param q A question object
@@ -97,6 +116,8 @@ public class category {
    public void setQuestion(Question q, int index) {
 	   questions.set(index, q);
    }
+   
+   
    
    public void clearQuestions() {
 	   questions.clear();

@@ -138,7 +138,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
     /**
      * JLabel for the game title.
      */
-    protected JLabel title = new JLabel("<html> FFLC 810 2020 Jeopardy </html>", SwingConstants.CENTER);
+    protected JLabel title = new JLabel("<html> Jeopardy! </html>", SwingConstants.CENTER);
     /**
      * ArrayList that holds all the labels of the player names.
      */
@@ -552,7 +552,7 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
         //Double Jeoprody button
         doubleJ.setBounds((int) (screenWidth / 7.2), screenHeight / 15, (int) (screenWidth / 9.6), screenHeight / 18);
         doubleJ.addActionListener(this);
-        //doubleJ.setEnabled(false);
+        doubleJ.setEnabled(false);
         add(doubleJ);
         
         //varibles needed for below
@@ -1216,144 +1216,16 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * createQuestions: This is the method where all the questions are made.
      */
     public void createQuestions() {
-//        for (int k = 0; k < categories.size(); k++) {
-//            for (int j = 1; j < nCQs + 1; j++) {
-//            	if (qvals.length == nCQs) {
-//            		categories.get(k).addQuestion(qvals[j - 1], "question", "answer");
-//            	} else {
-//            		categories.get(k).addQuestion(j * 100, "question", "answer");
-//            	}
-//            }        
-//        }
-    	//Ryan
-        categories.get(0).addQuestion(100, "What is Ryan’s most quotable movie?",
-                "Caddyshack");
-        categories.get(0).addQuestion(200, "Name the First and last name of one of Ryan’s two middle school "
-        		+ "text girlfriends", "Brinn Anderson (2 months) or Julia Rosenberg (1 week)");
-        categories.get(0).addQuestion(300, "Name Ryan’s Pet peeve ", "When people take Ryan's food without asking");
-        categories.get(0).addQuestion(400, ": Who is Ryan’s Favorite actor who had a role in the office. "
-        		+ "You must say the actors real name to get points. ", "James Spader (Robert California)");
-        categories.get(0).addQuestion(500, "Name of Ryan’s attractive middle aged suburban softball mom boss from last summer internship",
-        		"Kelly Mutuc");
-        categories.get(0).addQuestion(750, "What was the last thing that made Ryan shed a tear?", 
-        		"Episode 7 of the last dance when Michael Jordan talked about intensity/winning");
-
-        //Kyle
-        categories.get(1).addQuestion(100, "How many girlfriends has Kyle had in his life?",
-                "0 (the best possible answer)");
-        categories.get(1).addQuestion(200, "What is the name of the girl that Kyle had his first kiss with?", "Jenna");
-        categories.get(1).addQuestion(300, "How tall was Kyle when he started high school?",
-                "5 feet 2 inches");
-        categories.get(1).addQuestion(400, "Kyle got all a’s every quarter in 6th grade. What quarter did he get all a’s for the fifth and final time in middle school?",
-                "8th grade 2nd quarter");
-        categories.get(1).addQuestion(500, "In a summer baseball league before junior year, Kyle had a very high batting average. What was it? ",
-        		".475 (count anything between .450 and .500)");
-        categories.get(1).addQuestion(750, "When Kyle was in mustang 10 and he won the World Series, he hit a triple. What was unique about said triple?",
-        		"Bases were loaded, pitcher was a lefty, the player in right field was a girl");
-
-        //Chris
-        categories.get(2).addQuestion(100, "What is Jeff’s favorite nickname for Chris? (Gotta say it like he does)", 
-        		"MMMMMMMarijuana Masloski");
-        categories.get(2).addQuestion(200, "What is Chris's new favorite activity? (Not including smoking) ",
-                "Reading ");
-        categories.get(2).addQuestion(300, "When did Chris brake his wrist and how? ", "fall junior year playing hockey ");
-        categories.get(2).addQuestion(400, "Who has Chris seen in concert more than once?", 
-        		"Travis Scott");
-        categories.get(2).addQuestion(500, "How many songs does Chris know on the piano?", "25");
-        categories.get(2).addQuestion(750, "What were the things that Chris lost when Chris blacked out on New Year’s Eve in Madrid? Name all 6",
-        		": Phone, debt card and cash/money, glenview park district gym card, jacket and belt.");
-
-
-        //Joey
-        categories.get(3).addQuestion(100, "Spell Joey's last name",
-                "Masloski");
-
-        categories.get(3).addQuestion(200, "What’s Joey's shoe size", "13 or 14");
-
-        categories.get(3).addQuestion(300, "Joey's first round pick last year was...",
-                "Deandre Hopkins");
-
-        categories.get(3).addQuestion(400, "name one thing in Joey's tiktok bio", "19, tiktok tv show, certified weirdo, dm me on insta I’ll reply");
-
-        categories.get(3).addQuestion(500, "when was the last time Joey said something in the fflc?(+-2 days, 400 pts) what did Joey say?(100 pts)",
-                "May 30th, Idc");
-        categories.get(3).addQuestion(750, "Who is Joey's Favorite Pornstar", "Jessa Rhodes");
-
-
-        //Lefteri
-        categories.get(4).addQuestion(100, "At what movie did Lefty first declare his independence from the Margwa?",
-        		"Captian America Civil War");
-        categories.get(4).addQuestion(200, "What is Lefty’s least favorite activity? ", "Running");
-        categories.get(4).addQuestion(300, "How many tickets has Lefteri gotton", "one");
-        categories.get(4).addQuestion(400, "What non-beer drink is Lefty’s drink of choice? ", "Vodka Tonic");
-        categories.get(4).addQuestion(500, "How many girls has Lefty broken up with over text? ","2");
-        categories.get(4).addQuestion(750, "What is Leftys neuroscience specilization? ", "Behavioral");
-        
-        //Kosta
-        categories.get(5).addQuestion(100, "Who does Kosta live with in Columbus? ", "Lefty and Kyle (will accept if someone says cousin)");
-        categories.get(5).addQuestion(200, "What is Kosta’s middle initial? ", "L");
-        categories.get(5).addQuestion(300, "What section of the ACT did Kosta do the worst in? ","Reading");
-        categories.get(5).addQuestion(400, "Who is Kosta’s favorite female singer?", "Halsey");
-        categories.get(5).addQuestion(500, "Which Ohio State football player did Kosta have a weird encounter "
-        		+ "with (Kosta was looking at him, he started looking at Kosta like “what the fuck are you looking at man”)? ", "Justin Fields");
-        categories.get(5).addQuestion(750, "What did Kosta tell Becky Cloud 2 summers ago while she was still dating Jacob Newman? ", 
-        		"Soccer has a goalie but you can still score (I will accept anything along the lines of that)");
-
-
-        //Jack S
-        categories.get(6).addQuestion(100, "Who Jack’s best friend at school?", "Dan");
-        categories.get(6).addQuestion(200, "Who is the hottest girl Jack has gotten with?", "Julia Kelly");
-        categories.get(6).addQuestion(300, "Who is Jacks favorite baseball player","Jose Abreu");
-        categories.get(6).addQuestion(400, "In what neighborhood of Pittsburgh is the university of Pittsburg mainly located ", 
-        		"Oakland");
-        categories.get(6).addQuestion(500, "What is the maximum number of times Jack has masturbated in a day", "Six");
-        categories.get(6).addQuestion(750, "What is the last name of the girl Jack was having sex with for a few months this fall ", 
-        		"Allmandinger, pronounced all men ding her");
-
-        //Timmy
-        categories.get(7).addQuestion(100, "Timmy is currently the champion of this League. Name one starter/startable player that was on his "
-        		+ "fantasy team at the end of the year?", "Will accpet any of the following: Russel Wilson Derick Henry Aaron Jones"
-        				+ "Davante Adams, Odell Beckham Jr Darren Waller Josh Gordan, Damien Williams, Robby Anderson, Ronald Jones Raheem Moorstead");
-        categories.get(7).addQuestion(200, "What is Timmy’s Major?", "Engineering Mechanics");
-        categories.get(7).addQuestion(300, "What is Timmy’s Favorite Video game?", "Witcher 3 Wild Hunt (Will accept Witcher 3)");
-        categories.get(7).addQuestion(400, "On what day and year did Timmy first get drunk? Year can be given in actual year or your year in school at the time."
-        		, "July 4th 2017 Summer before my senior year of High School");
-        categories.get(7).addQuestion(500, "How many programming languages does Timmy know? Name at least half. "
-        		+ "If you get the exact number wrong, but you are able to name all/most of the languages correctly you will still get points", 
-        		"5 total Java, Python, C++, Javascript, MATLAB (If you name Java Python C++ and Javascript you get points)");
-        categories.get(7).addQuestion(750, "Timmy is in a fraternity, who is Timmy’s pledge dad? You need to include first and last name to get points. "
-        		+ "If you only know first name I will give you points if you provide enough personal details, or/and give an accurate physical description.", 
-        		"Ryan Shiffer, Timmy is the judge if descriptions work or not but things Timmy was looking for was major (Industrial Enginnering)"
-        		+ " 5 foot 9ish black hair with a full beard");
-        
-        //Jeff
-        categories.get(8).addQuestion(100, "Jeff’s ex gf name", "Noa");
-        categories.get(8).addQuestion(200, "Jeff’s first kiss", "Falyn Mellul");
-        categories.get(8).addQuestion(300, "What is Jeff’s favorite beer","Michelob Ultra");
-        categories.get(8).addQuestion(400, "In the 2016 FFLC draft who did Jeff pick that turned out to be a bust", "Todd Gurely");
-        categories.get(8).addQuestion(500, "What 3 past and present NFL players did Jeff interview last year at bears Gala", 
-        		"Urlacher, Trubisky, Allen Robinson");
-        categories.get(8).addQuestion(750, "what is Jeff’s go to drink at the bar", "Vodka soda");
-
-        //Jared
-        categories.get(9).addQuestion(100, "Redemption time- Name both of my brothers.", "Zach and Ryan");
-        categories.get(9).addQuestion(200, "Where did I lose my virginity?", "Paris");
-        categories.get(9).addQuestion(300, "What is my favorite beer?","Left Hand Nitro Milk Stout");
-        categories.get(9).addQuestion(400, "What is responsible for the worst night of my life?", 
-        		"Four Loko (I passed out and puked on my pillow while my roommate had a girl over)");
-        categories.get(9).addQuestion(500, "Why did I lose my phone at Lolla 2017?", 
-        		"I got super crossed, phone got taken out of my pocket and I didn’t even notice.");
-        categories.get(9).addQuestion(750, "If I could have any superpower, what would it be?", "Shapeshifting (It’s basically a bunch of different powers at once)");
-
-
-        //Jack W
-        categories.get(10).addQuestion(100, "What bone did Whetstone fracture this year?", "Tibia");
-        categories.get(10).addQuestion(200, "What is Whetstone’s middle name?", "Leo");
-        categories.get(10).addQuestion(300, "What was Whetstone supposed to be doing for Deloitte this summer",
-        		"2 acceptable answers: Risk and Financial Advisory or Assurance and Internal Audit");
-        categories.get(10).addQuestion(400, "What place did Whetstone get at cross country nationals in 2019?", "14");
-        categories.get(10).addQuestion(500, "What is Whetstone’s all time favorite beer company?", "Leinenkugels");
-        categories.get(10).addQuestion(750, "What fine arts class did Whetstone take at GBS?", "Ceramics");
+    	categories.get(8).addQuestion(500, "What is the ninth letter in the alphebet?", "I");
+        for (int k = 0; k < categories.size(); k++) {
+            for (int j = 1; j < nCQs + 1; j++) {
+            	if (qvals.length == nCQs) {
+            		categories.get(k).addQuestion(qvals[j - 1], "question", "answer");
+            	} else {
+            		categories.get(k).addQuestion(j * 100, "question", "answer");
+            	}
+            }        
+        }
     }
     /**
 	 * percentDiffrence: Helper function to caculate the percent diffrence between two numbers.
@@ -1515,37 +1387,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
 		else if (i % 3 == 0) {
 			
 		}
-//		String[] cInfo = s.split(" ");
-//		//adds category name.
-//		category c = new category(cInfo[0]);
-//		categories.add(c);
-//		int i2 = categories.size() - 1;
-//		String add = "";
-//		int three = 0;
-//		int index = 0;
-//		//adding question object to categories
-//		for (int k = 1; k < cInfo.length; k++) {
-//			//if statments make sure all the data for the question has been gathered before adding 
-//			//question to category.
-//			
-//			if (three < 3) {
-//				add += cInfo[k] + " ";
-//			} else {
-//				String[] ques = add.split(" ");
-//				Question q = new Question(qvals[index], ques[1], ques[2]);
-//				q.setCategory(categories.get(i2).getCname());
-//				categories.get(i2).addQuestion(q.getValue(), q.get_question(), q.getAnswer());
-//				index++;
-//				three = 0;
-//				add = "";
-//				add += cInfo[k] + " ";
-//			}
-//			three++;
-//		}
-//		String[] ques = add.split(" ");
-//		Question q = new Question(qvals[index], ques[1], ques[2]);
-//		q.setCategory(categories.get(i2).getCname());
-//		categories.get(i2).addQuestion(q.getValue(), q.get_question(), q.getAnswer());
 	}
 	
 	/**
