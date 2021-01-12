@@ -3,8 +3,9 @@
 Jeoprady is a modified version of the Jeoprady game show. Jeoprady is meant to be a fun game a group of friends can play. Friends can submit questions to the game host, and then guess each others questions. Answering a question correctly would get a player points, and the player with the most points at the ends wins. Players can also submit questions for a double jeoprady, which can be playerd after the intial game is finished. The game itself keeps track of player points, the questions that have been answered, and stores all of the information on each question and how many points each question is worth. Their are a few major diffrences between this version of jeoprady and tradition jeoprady from the game show on TV. First in this jeoprady players do not lose points for guessing. Second this game can be played by any amount of players. Lastly their can be any number of questions per category, and the point values of each question can vary. For more infomation on traditional jeoprady visit [https://en.wikipedia.org/wiki/Jeopardy!].
 ## Instalation
 Jeoprady can be downloaded from this github, and should be able to run immediatly after downloading. Note: the computer downloading this project must have java in order for the project to run. You can start the game by running the main.java file.
+<p align="center"><img src = "Jeoprady%20Pictures/Intial%20Run.png" width= 75% height = 50%></p>
 ## Usage
-To intially start the project run the main.java class. For refrence the project using eclipse IDE. If you run main.java immeditly after downloading the project you should see the following screen.
+To intially start the project run the main.java class. For refrence the project was built using eclipse IDE, and all screenshots of code below are from eclipse IDE. If you run main.java immeditly after downloading the project you should see the following screen.
 
 **Editing Players, Category, and Question Points**
 
