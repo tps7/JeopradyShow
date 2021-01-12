@@ -11,11 +11,15 @@ To intially start the project run the main.java class. For refrence the project 
 
 Right now, in the default game all of the players have the names of numbers (1-11), and all the categories have a one letter name. Since the game has already started in order to change the players and cateogries you would have to exit the game. Unfortinatly to edit things like player names, number of players, category names, number of categories, number of questions per category, and question point value, you need to go into the code and manually change the values. 
 To change the category names, player names, and question point values you need to go into the main.java file and edit the lists cats,and people. You could also make your own lists, but make sure to change the code where your cats and people appear. For example changing a category 
-
+<p align="center"><img src = "Jeoprady%20Pictures/Edit%20category.png" width= 50% height = 25%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/Edit%20category%202.png" width= 50% height = 25%></p>
 Once the list is edited run main.java. You should see updated category names!
+<p align="center"><img src = "Jeoprady%20Pictures/Cateogorys%20changed.png" width= 75% height = 50%></p>
+
 
 The process is almost exactly the same for changing point values and player names. Edit the lists and run main.java. The player names, and point values for each question should be updated.
-
+<p align="center"><img src = "Jeoprady%20Pictures/Edit%20player%20name.png" width= 50% height = 25%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/Player%20name:num%20vals%20run.png" width= 75% height = 50%></p>
 
 Note the number of categories, player's, and questions per category is equal to the number of elements in each of their respective arrays
 Now going to back to the orginal board lets say you want to answer a question. Lets say you choose the question from category a for 100 points.
