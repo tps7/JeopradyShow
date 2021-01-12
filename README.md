@@ -5,8 +5,7 @@ Jeoprady is a modified version of the Jeoprady game show. Jeoprady is meant to b
 Jeoprady can be downloaded from this github, and should be able to run immediatly after downloading. Note: the computer downloading this project must have java in order for the project to run. You can start the game by running the main.java file.
 ## Usage
 To intially start the project run the main.java class. For refrence the project was built using eclipse IDE, and all screenshots of code below are from eclipse IDE. If you run main.java immeditly after downloading the project you should see the following screen: 
-<img src = "Jeoprady%20Pictures/Intial%20Run.png" width= 75% height = 50%>
-<p align="center"<img src = "Jeoprady%20Pictures/Intial%20Run.png" width= 75% height = 50%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/Intial%20Run.png" width= 75% height = 50%></p>
 
 **Editing Players, Category, and Question Points**
 
