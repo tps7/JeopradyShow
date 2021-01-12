@@ -39,7 +39,7 @@ The default answer to all questions is "answer". Below the answer buttons corres
 
 
 By clicking on player 5 you now come back to the game board. Player 5 will now have 100 points. If player 5 gets more questions right the value from those questions will then add to player 5's total score. 
-<p align="center"><img src = "Jeoprady%20Pictures/5%20has%20more%20points.png" width= 75% height = 50%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/5%20has%20points.png" width= 75% height = 50%></p>
 
 This process applies to other players as well.
 <p align="center"><img src = "Jeoprady%20Pictures/Board%20with%20lots%20of%20questions%20answered.png" width= 75% height = 50%></p>
@@ -50,6 +50,10 @@ Lets say the game host makes a mistake, like for example clicking on the wrong q
 <p align="center"><img src = "Jeoprady%20Pictures/Edit%20Screen.png" width= 75% height = 50%></p>
 
 Their are a couple options for editing. You can Enable buttons using the edit buttons line. You can change scores using the edit scores line. Explanations for how edit the board appear on the right side of the screen. Below are two examples of enabling the button b 100, and ediing the score of player 7 so that player 6 has 7000 points. 
+<p align="center"><img src = "Jeoprady%20Pictures/reEnableing%20b%20100.png" width= 75% height = 50%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/reEnable%20button.png" width= 75% height = 50%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/Editing%20score.png" width= 75% height = 50%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/Player%207%20score%20has%20been%20edited.png" width= 75% height = 50%></p>
 
 While in the edit function screen all of the question buttons are disabled, so you do not accidently click on any questions. To finish editing you can go back to the normal game board by pressing the done button that appears right below the edit function. There is no function to disable buttons in the edit screen because this can be done easily in the main game sceeen by clicking on a question, and then clicking the go back button. 
 
