@@ -1216,7 +1216,6 @@ public class Jboard2 extends JFrame implements ActionListener, WindowListener, C
      * createQuestions: This is the method where all the questions are made.
      */
     public void createQuestions() {
-    	categories.get(8).addQuestion(500, "What is the ninth letter in the alphebet?", "I");
         for (int k = 0; k < categories.size(); k++) {
             for (int j = 1; j < nCQs + 1; j++) {
             	if (qvals.length == nCQs) {
