@@ -74,9 +74,12 @@ As you can see the question and answer changed from the default for the question
 
 **Save and Load**
 
-What if you are playing jeoprady, and you want to stop take a break and play again later? To do this you click the save button in the upper right hand corner. Enter the name that you want to save the game under and click ok. This will document all of the game data in a .txt file. 
-
+What if you are playing jeoprady, and you want to stop take a break and play again later? To do this you click the save button in the upper right hand corner.
+<p align="center"><img src = "Jeoprady%20Pictures/Save%20File.png" width= 75% height = 50%></p>
+Enter the name that you want to save the game under and click ok. This will document all of the game data in a .txt file.
 If you want to load the game later click run main.java and click on the Load button. Type in the name of the file you want to load, and your saved game will load. 
+<p align="center"><img src = "Jeoprady%20Pictures/Load%20File.png" width= 75% height = 50%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/File%20Loaded.png" width= 75% height = 50%></p>
 
 This function works even if the details of the game in the code are diffrent than the game you want to load. For example if the categories are "a, b, c" in the code you can still load and play a game with categories "1, 2, 3, 4, 5". The questions you have answered and the point for each player in the saved game will also carry over once you load the game.
 
@@ -106,6 +109,7 @@ Using this formating some could make a game from a .txt file, bypassing the need
 **Double Jeoprady**
 
 Once you finish answering all the questions the double jeoprady button that is normally disabled at the top of the screen will become enabled. 
+<p align="center"><img src = "Jeoprady%20Pictures/Double%20Jeoprady%20Board.png" width= 75% height = 50%></p>
 
 By clickng on the Double Jeoprady Button you will get a new game board with new questions and categories. Player names and scores will carry over from the old game. 
 
