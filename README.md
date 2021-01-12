@@ -109,7 +109,7 @@ Using this formating some could make a game from a .txt file, bypassing the need
 **Double Jeoprady**
 
 Once you finish answering all the questions the double jeoprady button that is normally disabled at the top of the screen will become enabled. 
-<p align="center"><img src = "Jeoprady%20Pictures/Double%20Jeoprady%20Board.png" width= 75% height = 50%></p>
+<p align="center"><img src = "Jeoprady%20Pictures/Double%20Jeoprady%20Board2.png" width= 75% height = 50%></p>
 The double jeoprady button can also be enabled before all the questions are answered. This can be done by going to the edit screen and checking the box next to enable double jeoprady.
 By clickng on the Double Jeoprady Button you will get a new game board with new questions and categories. Player names and scores will carry over from the old game. 
 <p align="center"><img src = "Jeoprady%20Pictures/djboard1.png" width= 75% height = 50%></p>
